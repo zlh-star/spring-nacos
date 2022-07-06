@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.springbootmybatis0.dao.UserMapper" >
+<resultMap id="BaseResultMap" type="com.example.springbootmybatis0.bean.User">
+    <id column="id" property="id" jdbcType="INTEGER"/>
+    <result column="myName" property="myName" jdbcType="VARCHAR"/>
+    <result column="age" property="age" jdbcType="INTEGER"/>
+</resultMap>
+    <sql id="Base_Column_List">
+        id,myName,age
+    </sql>
+
+    <select id="getAll" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"></include>
+        from user1
+    </select>
+
+    <select id="getUser" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select <include refid="Base_Column_List"></include>
+        from user1
+        where id=#{id}
+    </select>
+
+    <insert id="insertUser" parameterType="java.util.List">
+<!--       <selectKey keyProperty="id" resultType="java.lang.String" order="BEFORE">-->
+<!--           select id as user1 from user1-->
+<!--       </selectKey>-->
+        insert into user1
+        (id,myName,age)
+<!--        <foreach collection="id" item="item" open="(" close=")" separator=",">-->
+<!--            #{item},#{id}-->
+<!--        </foreach>-->
+<!--        <foreach collection="myName" item="item" open="(" close=")" separator=",">-->
+<!--            #{item},#{myName}-->
+<!--        </foreach>-->
+<!--        <foreach collection="age" item="item" open="(" close=")"-->
+        values
+        (#{id},#{myName},#{age})
+    </insert>
+
+    <update id="updateUser" parameterType="com.example.springbootmybatis0.bean.User">
+        update user1
+        <set>
+            <if test="myName!=null">
+                myName=#{myName},
+            </if>
+            <if test="age!=null">
+                age=#{age}
+            </if>
+        </set>
+        where
+        id=#{id}
+    </update>
+
+    <delete id="deleteUser" parameterType="java.lang.String">
+        delete from user1
+        where id=#{id}
+    </delete>
+
+</mapper>

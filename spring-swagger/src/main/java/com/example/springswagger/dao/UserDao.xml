@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.springswagger.dao.UserDao" >
+    <resultMap id="BaseResultMap" type="com.example.springswagger.dao.User">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="nickName" property="nickName" jdbcType="VARCHAR"/>
+<!--        <result column="createDate" property="createDate" jdbcType="VARCHAR"/>-->
+        <result column="age" property="age" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id,nickName,age
+    </sql>
+
+    <select id="getUserById" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select <include refid="Base_Column_List"></include>
+        from user2
+        where id=#{id}
+    </select>
+
+    <select id="getAllUsers" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"></include>
+        from user2
+    </select>
+
+    <insert id="addUser" parameterType="java.util.List">
+        <!--       <selectKey keyProperty="id" resultType="java.lang.String" order="BEFORE">-->
+        <!--           select id as user1 from user1-->
+        <!--       </selectKey>-->
+        insert into user2 (id,nickName,age) values
+        <foreach collection="users" item="item" index="index" separator=",">
+           ( #{item.id},#{item.nickName},#{item.age})
+        </foreach>
+    </insert>
+
+    <update id="updateUser" parameterType="com.example.springswagger.dao.User">
+        update user2
+        <set>
+            <if test="age!=null">
+                age=#{age},
+            </if>
+            <if test="nickName!=null">
+                nickeName=#{nickName},
+            </if>
+<!--            <if test="createDate!=null">-->
+<!--                createDate=#{createDate}-->
+<!--            </if>-->
+        </set>
+        where
+        id=#{id}
+    </update>
+
+    <delete id="deleteById">
+        delete from user2
+        where id=#{id}
+    </delete>
+
+</mapper>

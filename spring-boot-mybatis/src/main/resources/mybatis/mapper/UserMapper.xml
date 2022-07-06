@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.springbootmybatis.mapper.UserMapper" >
+    <resultMap id="BaseResultMap" type="com.example.springbootmybatis.mapper.User" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="myName" property="myName" jdbcType="VARCHAR" />
+        <result column="age" property="age" jdbcType="INTEGER" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        id, myName, age
+    </sql>
+
+    <select id="getAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from user1
+    </select>
+
+    <select id="getOneUser" resultMap="BaseResultMap" parameterType="java.util.List">
+        select*
+<!--        <include refid="Base_Column_List"></include>-->
+        from user1
+        where id=#{id}
+    </select>
+    <select id="getAlltedIds" parameterType="java.util.List">
+        select id
+        from user1
+    </select>
+
+    <insert id="addUser" parameterType="com.example.springbootmybatis.mapper.User">
+<!--        <selectKey keyProperty="id" resultType="java.lang.String" order="BEFORE">-->
+<!--            select id as user1 from user1-->
+<!--        </selectKey>-->
+        insert into user1 (id,myName,age) values
+        <foreach collection="addUser" item="item" separator="," open="(" close=")" index="index">
+            #{item.id},#{item.myName},#{item.age}
+        </foreach>
+    </insert>
+
+    <delete id="deleteUser" parameterType="java.util.List">
+        delete from user1 where id=#{id} in 
+        <foreach collection="list" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </delete>
+
+    <update id="updateUser" parameterType="com.example.springbootmybatis.mapper.User">
+        update user1
+        <set>
+        <if test="myName != null and myName !=''">
+        myName = #{myName},
+        </if>
+        <if test="age != null and age !=''">
+        age = #{age},
+        </if>
+<!--        <if test="id!= null">-->
+<!--        id = #{id}-->
+<!--        </if>-->
+        </set>
+<!--        <where>-->
+<!--                <if test="id!= null">-->
+<!--                and id = #{id}-->
+<!--                </if>-->
+<!--        </where>-->
+            where
+            id=#{id}
+    </update>
+
+    
+    
+
+
+</mapper>

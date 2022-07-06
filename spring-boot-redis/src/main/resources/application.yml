@@ -1,0 +1,36 @@
+server:
+  port: 8087
+spring:
+  profiles:
+    active: dev
+  application:
+    name: spring-boot-redis
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+  cache:
+    type: REDIS
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password:
+    timeout: 10000
+    database: 0
+
+    lettuce:
+      pool:
+        max-active: 100
+        max-wait: -1
+        max-idle: 8
+        min-idle: 0
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+swagger:
+  show: true

@@ -1,0 +1,23 @@
+#spring.application.name=springboot-apollo
+apollo:
+  bootstrap:
+    enabled: true
+    namespaces: springboot-apollo
+  Meta: http://localhost:8080
+server:
+  port: 8109
+spring:
+  application:
+    name: springboot-apolle
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
