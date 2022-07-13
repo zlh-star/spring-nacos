@@ -6,6 +6,7 @@ import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapper;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -24,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
+@Api(tags = "crud生成器")
 public class GeneratorController {
 
     @Autowired
