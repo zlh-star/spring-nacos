@@ -1,16 +1,19 @@
 package com.example.springboottest.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.example.springboottest.model.Student;
 import com.example.springboottest.model.UserCondition;
 import com.example.springboottest.model.UserModel;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 import java.util.Map;
 
 @Mapper
 public interface UserDao extends BaseMapper<UserModel> {
+    Page<UserModel> page(@Param("page") Page<UserModel> page);
     /**
      * 插入账户数据
      * @param userModel

@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.springbootmybatisplus.mapper.User;
 import com.example.springbootmybatisplus.mapper.UserMapper;
 import com.example.springbootmybatisplus.service.UserService;
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -52,7 +54,6 @@ public class UserController {
     @GetMapping("/findPage")
     public IPage<User> findPage() {
         Page<User> page = new Page<>(1, 3);
-
         return userMapper.selectPage(page, null);
     }
 
@@ -81,4 +82,13 @@ public class UserController {
     public Boolean deleteUserByService(String id) {
         return userService.removeById(id);
     }
+
+//    @ApiModelProperty(value = "分页",notes = "分页插件")
+//    @ApiOperation(value = "分页",notes = "mybatisPlus分页插件")
+//    @GetMapping("/findPage")
+//    public Object findPage(User user) {
+//        Page<User> page = new Page<>(user.getBegin(),user.getEnd());
+//        Page<User> modelPage=userMapper.selectPage(page, null);
+//        return modelPage;
+//    }
 }

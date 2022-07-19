@@ -24,7 +24,7 @@ import java.util.Date;
 public class UserModel {
     @Id
     @ApiModelProperty(example = "123",notes = "账号Id")
-    @TableId(value = "accountId",type= IdType.UUID)
+    @TableId(value = "accountId")
     private String accountId;
 
     @ApiModelProperty(example = "zhaolinhai",notes = "用户名")

@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @TableName("user2")
 public class User {
-    @TableId(value = "id",type = IdType.UUID)
+    @TableId(value = "id")
     private String id;
 
     @TableField("nickName")
@@ -21,5 +21,10 @@ public class User {
 
     @TableField("age")
     private String age;
+
+    @TableField("begin")
+    private int begin;
+    @TableField("end")
+    private int end;
 
 }

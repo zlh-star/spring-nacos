@@ -19,6 +19,38 @@ public class ServiceImpl implements MenuService  {
     }
 
     @Override
+    public List<MenuBo> getNextChildMenuList(List<MenuBo> menuBoList) {
+        List<MenuBo> menuBoList1=new ArrayList<>();
+//        MenuBo menuBo2=new MenuBo();
+        List<MenuBo> boList=new ArrayList<>();
+        for (MenuBo menuBo:menuBoList){
+            if(menuBo.getMenuParentId()==null||menuBo.getMenuParentId()==""){
+                menuBoList1.add(menuBo);
+            }
+        }
+        menuBoList1.forEach(menuBo1->{
+//                menuBo2.setChildrenList();
+            MenuBo list1=list(menuBo1,menuBoList);
+            boList.add(list1);
+        });
+        return boList;
+    }
+
+    private MenuBo list(MenuBo menuBo1,List<MenuBo> menuBos){
+        List<MenuBo> boList=new ArrayList<>();
+//        MenuBo menuBo1=new MenuBo();
+        menuBos.forEach(menuBo -> {
+            if(menuBo1.getMenuId().equals(menuBo.getMenuParentId())){
+//                menuDao.getNextChildMenu(menuBo.getMenuId());
+                boList.add(list(menuBo,menuBos));
+            }
+//            boList.add(menuBo);
+        });
+        menuBo1.setChildrenList(boList);
+        return menuBo1;
+    }
+
+    @Override
     public List<MenuBo> getAllMenuTitle() {
         return menuDao.getAllMenuTitle();
     }
@@ -53,9 +85,9 @@ public class ServiceImpl implements MenuService  {
             // 判断是否为menuBo的子级
             if (menuBo.getMenuId().equals(menuBo1.getMenuParentId())) {
                 // 获取所有菜单并分级
-//                childrenList.add(this.getTreeChildren(menuBo1, menuBoList));
+                childrenList.add(getTreeChildren(menuBo1, menuBoList));
                 //获取所有顶级菜单及他们的下级菜单，并分级
-                childrenList=menuDao.getNextChildMenu(menuBo1.getMenuParentId());
+//                childrenList=menuDao.getNextChildMenu(menuBo1.getMenuParentId());
             }
         }
         // 循环结束,设置menuBo的子级

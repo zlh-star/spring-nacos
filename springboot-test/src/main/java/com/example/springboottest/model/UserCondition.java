@@ -9,8 +9,8 @@ public class UserCondition {
     private String pageIndex;
     private int page;
     private int rows;
-    private int pageBegin;
-    private int pageEnd;
+    private Long pageBegin;
+    private Long pageEnd;
     private String pageNo;
     private String pageSize;
     private String accountId;
@@ -18,8 +18,8 @@ public class UserCondition {
     private String password;
     private Date createData;
 
-    private int begin = 0;
-    private int end = 10;
+//    private int begin = 0;
+//    private int end = 10;
 
     public int getPage() {
         return page;
@@ -37,38 +37,25 @@ public class UserCondition {
         this.rows = rows;
     }
 
-    public int getPageBegin() {
+    public Long getPageBegin() {
         return pageBegin;
     }
 
-    public void setPageBegin(int pageBegin) {
+    public void setPageBegin(Long pageBegin) {
         this.pageBegin = pageBegin;
     }
 
-    public int getPageEnd() {
+    public Long getPageEnd() {
         return pageEnd;
     }
 
-    public void setPageEnd(int pageEnd) {
+    public void setPageEnd(Long pageEnd) {
         this.pageEnd = pageEnd;
-    }
-
-    public int getBegin() {
-        // 实现起点
-        return pageBegin - 1;
-    }
-
-    public void setBegin(int begin) {
-        this.begin = begin;
     }
 
     public int getEnd() {
         // 实现截止点
         return rows;
-    }
-
-    public void setEnd(int end) {
-        this.end = end;
     }
 
     public String getPageNo() {

@@ -23,9 +23,9 @@ public class UserController {
     private UserService userService;
 
 
-    @ApiOperation(value="返回用户列表界面",httpMethod = "get")
-    @RequestMapping(value="/userList",method = RequestMethod.GET)
-    public String userList(final Model model) {
+    @ApiOperation(value="返回用户列表界面")
+    @PostMapping(value="/userList")
+    public String userList(Model model) {
 
         return "userList";
     }
@@ -84,7 +84,7 @@ public class UserController {
      */
     @GetMapping("/findByUsername")
     @ResponseBody
-    @ApiOperation(value = "查找用户",nickname ="查找不到时返回一个新的User对象",httpMethod = "get")
+    @ApiOperation(value = "查找用户",nickname ="查找不到时返回一个新的User对象")
     public Mono<User> findByUsername(String name) {
         //查找不到时返回一个新的User对象
         return userService.findUserByName(name)
@@ -99,7 +99,7 @@ public class UserController {
      */
     @GetMapping(value="/allUser", produces = MediaType.APPLICATION_STREAM_JSON_VALUE)
     @ResponseBody
-    @ApiOperation(value = "查找所有用户",nickname = "每条数据之间间隔两秒",httpMethod = "get")
+    @ApiOperation(value = "查找所有用户",nickname = "每条数据之间间隔两秒")
     public Flux<User> findAll() {
         //每条数据之间延迟2秒
         return userService.findAll().delayElements(Duration.ofSeconds(2));
@@ -112,7 +112,7 @@ public class UserController {
      */
     @GetMapping("/list")
     @ResponseBody
-    @ApiOperation(value = "查找所有用户",httpMethod = "get")
+    @ApiOperation(value = "查找所有用户")
     public Flux<User> list(){
         Flux<User> flux = userService.findAll().map(x->{
             User user = new User();

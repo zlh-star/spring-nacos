@@ -23,6 +23,11 @@
         from account
     </select>
 
+    <select id="page" resultMap="BaseResultMap">
+        select *
+        from account
+    </select>
+
 <!--    <select id="selectAccount" resultMap="BaseResultMap" parameterType="java.util.List">-->
 <!--        select a.accountId,a.accountName,a.password-->
 <!--        from account a-->

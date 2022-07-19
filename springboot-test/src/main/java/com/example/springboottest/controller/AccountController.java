@@ -1,9 +1,16 @@
 package com.example.springboottest.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.segments.MergeSegments;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.example.springboottest.dao.StudentDao;
 import com.example.springboottest.dao.UserDao;
 import com.example.springboottest.dao.UserServiceDao;
+import com.example.springboottest.model.Student;
+import com.example.springboottest.model.StudentCondition;
 import com.example.springboottest.model.UserCondition;
 import com.example.springboottest.model.UserModel;
 import io.swagger.annotations.Api;
@@ -19,6 +26,7 @@ import java.net.URLDecoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 @Api(value = "用户演示类")
@@ -30,6 +38,9 @@ public class AccountController {
 
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    private StudentDao studentDao;
 
     @Autowired
     private UserServiceDao userServiceDao;
@@ -71,6 +82,7 @@ public class AccountController {
         else{
             List<UserModel> userAllAccountlist=userDao.getAllAccount();
             if(userAllAccountlist!=null && userAllAccountlist.size()>0){
+                //去重操作
                 List<UserModel> notexitlist=userModelList.stream().filter(name->
                         (!userAllAccountlist.contains(name))).collect(Collectors.toList());
                 if(notexitlist==null||notexitlist.size()==0){
@@ -198,21 +210,35 @@ public class AccountController {
     @ApiModelProperty(value = "分页",notes = "分页插件")
     @ApiOperation(value = "分页",notes = "mybatisPlus分页插件")
     @GetMapping("/findPage")
-    public IPage<UserModel> findPage(UserCondition userCondition) {
-        Page<UserModel> page = new Page<>(userCondition.getBegin(),userCondition.getEnd());
-        return userDao.selectPage(page, null);
+    public Object findPage(UserCondition userCondition) {
+        Page<UserModel> page = new Page<>(userCondition.getPageBegin(),userCondition.getPageEnd());
+        IPage<UserModel> modelPage=userDao.selectPage(page, null);
+        return modelPage;
     }
 
-    @ApiModelProperty(value = "分页")
-    @ApiOperation(value = "分页")
-    @GetMapping("/findpage")
-    public List<UserModel> findpage(UserCondition userCondition){
-        Map<String,Object> paramMap=request2Map(userCondition);
-        UserCondition userCondition1=new UserCondition();
-        userCondition1.setBegin((int) paramMap.get("pageEnd"));
-        userCondition1.setEnd((int)paramMap.get("begin"));
-        List<UserModel> modelList=userDao.selectAllAccount(userCondition1);
-        return modelList;
+    @ApiModelProperty(value = "分",notes = "分页插件")
+    @ApiOperation(value = "分",notes = "mybatisPlus分页插件")
+    @GetMapping("/find")
+    public Object find(StudentCondition condition){
+        Page<Student> studentPage = new Page<Student>(condition.getPageNo(), condition.getPageSize());
+        IPage<Student> page=studentDao.selectPage(studentPage,null);
+        return page;
+    }
+
+    @ApiModelProperty(value = "分页数",notes = "分页插件")
+    @ApiOperation(value = "分",notes = "mybatisPlus")
+    @GetMapping("/findye")
+    public Object listToPage(int pageNum, int pageSize){
+        List<UserModel> pageList = new ArrayList<>();
+        List<UserModel> list=userDao.getAllAccount();
+        int curIdx = pageNum > 1 ? (pageNum - 1) * pageSize : 0;
+        for (int i = 0; i < pageSize && curIdx + i < list.size(); i++) {
+            pageList.add(list.get(curIdx + i));
+        }
+        IPage page = new Page<>(pageNum, pageSize);
+        page.setRecords(pageList);
+        page.setTotal(list.size());
+        return page;
     }
 
     private Map<String, Object> request2Map(UserCondition userCondition) {
@@ -244,9 +270,10 @@ public class AccountController {
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
-                if (!StringUtils.isEmpty(keyValue))
+                if (!StringUtils.isEmpty(keyValue)) {
                     map.put(keyValue.substring(0, keyValue.indexOf("=")),
                             keyValue.substring(keyValue.indexOf("=") + 1));
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
