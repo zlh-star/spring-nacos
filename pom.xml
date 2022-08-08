@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.example</groupId>
+    <artifactId>spring nacos</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>springboot-mybatis-plus</module>
+        <module>client-server2</module>
+        <module>config-client</module>
+        <module>config-server</module>
+        <module>consumer</module>
+        <module>springboot-admin-server</module>
+        <module>spring-boot-jpa-druid</module>
+        <module>spring-boot-jpa-hikari</module>
+        <module>spring-boot-mybatis</module>
+        <module>spring-boot-mybatis0</module>
+        <module>spring-boot-redis</module>
+        <module>spring-cloud-bus-client</module>
+        <module>spring-cloud-bus-server</module>
+        <module>spring-cloud-gateway2</module>
+        <module>spring-cloud-getaway</module>
+        <module>spring-cloud-zuul</module>
+        <module>spring-cloud-zuul-filter</module>
+        <module>spring-swagger</module>
+        <module>springboot-admin-client</module>
+        <module>spring-boot-jpa-hikari</module>
+        <module>spring-boot-jpa-druid</module>
+        <module>springboot-apollo</module>
+        <module>springboot-mybatis-plus</module>
+        <module>springboot-rabbitmq</module>
+        <module>springboot-test</module>
+        <module>springboot-thymeleaf</module>
+        <module>springboot-webflux</module>
+        <module>springboot-webflux-mongodb</module>
+        <module>springcloud-consumer-okhttp</module>
+        <module>springcloud-provider-okhttp</module>
+        <module>springcloud-zuul-okhttp</module>
+        <module>hystrix-dashboard</module>
+        <module>provider</module>
+        <module>provider2</module>
+        <module>spring-boot-mail</module>
+        <module>spring-boot-schedul</module>
+        <module>springboot-swagger</module>
+        <module>springcloud-provider-okhttp2</module>
+        <module>lowcode-crud</module>
+        <module>menu-test</module>
+<!--        <module>spring-boot-elastic</module>-->
+<!--        <module>elastic</module>-->
+    </modules>
+
+
+</project>
