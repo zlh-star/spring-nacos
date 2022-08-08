@@ -1,0 +1,57 @@
+server:
+  port: 8085
+spring:
+  jpa:
+    database: mysql
+    show-sql: true
+    generate-ddl: true
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate:
+      ddl-auto: create
+  application:
+    name: spring-boot-thymleaf
+  datasource:
+    url: jdbc:mysql://localhost:3306/mysql
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+        auto-commit: true
+        minimum-idle: 2
+        idle-timeout: 60000
+        connection-timeout: 30000
+        max-lifetime: 1800000
+        pool-name: DatebookHikariCP
+        maximum-pool-size: 5
+  thymeleaf:
+    cache: false
+    check-template-location: true
+    # Content-Type value.
+    servlet:
+      content-type: text/html
+    enabled: true
+    # Template encoding.
+    encoding: UTF-8
+    mode: HTML
+    # Prefix that gets prepended to view names when building a URL.
+    prefix: classpath:/templates/
+    # Suffix that gets appended to view names when building a URL.
+    suffix: .html
+  mvc:
+    static-path-pattern: /static/**
+    view:
+      suffix: .html
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always

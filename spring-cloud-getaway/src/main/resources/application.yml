@@ -1,0 +1,29 @@
+server:
+  port: 8097
+spring:
+  application:
+    name: spring-cloud-getaway
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+    gateway:
+      routes:
+        - id: getaway-service
+          uri: https://github.com/
+          predicates:
+              - Path=/zlh-star
+      discovery:
+        locator:
+          enabled: true
+logging:
+  level:
+   org.springframework.cloud.gateway: debug
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always

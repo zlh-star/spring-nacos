@@ -1,0 +1,36 @@
+server:
+  port: 8098
+spring:
+  application:
+    name: spring-cloud-gateway2
+  redis:
+    host: 127.0.0.1
+    password:
+    port: 6379
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+    gateway:
+      routes:
+        - id: getaway-service
+          uri: https://baidu.com/
+          filters:
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 10
+                redis-rate-limiter.burstCapacity: 20
+                key-resolver: "#{@userKeyResolver}"
+          predicates:
+              - Method=GET
+      discovery:
+        locator:
+          enabled: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always

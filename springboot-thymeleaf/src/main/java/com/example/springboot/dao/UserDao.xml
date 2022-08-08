@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.springboot.dao.UserDao" >
+    <resultMap id="BaseResultMap" type="com.example.springboot.dao.mapper.User">
+        <id column="username" property="username" jdbcType="VARCHAR"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+        <result column="sex" property="sex" jdbcType="INTEGER"/>
+        <result column="birth" property="birth" jdbcType="VARCHAR"/>
+        <result column="email" property="email" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        username,password,sex,birth,email
+    </sql>
+
+    <select id="getAll" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"></include>
+        from user1
+    </select>
+    <select id="loginUser" resultType="java.lang.String">
+        select username,password
+        from user1
+        where username=#{username} and password=#{password}
+    </select>
+
+    <select id="getUser" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select <include refid="Base_Column_List"></include>
+        from user1
+        where username=#{username}
+    </select>
+
+    <insert id="insertUser" parameterType="java.util.List">
+        insert into user1
+        (username,password,sex,birth,email)
+        values
+        (#{username},#{password},#{sex},#{birth},#{email})
+    </insert>
+
+    <update id="updateUser" parameterType="com.example.springboot.dao.mapper.User">
+        update user1
+        <set>
+            <if test="password!=null">
+                password=#{password},
+            </if>
+            <if test="sex!=null">
+                sex=#{sex}
+            </if>
+            <if test="email!=null">
+                email=#{email}
+            </if>
+        </set>
+        where
+        username=#{username}
+    </update>
+
+    <delete id="deleteUser" parameterType="java.lang.String">
+        delete from user1
+        where username=#{username}
+    </delete>
+
+</mapper>

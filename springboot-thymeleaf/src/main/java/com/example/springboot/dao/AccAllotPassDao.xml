@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.springboot.dao.AccAllotPassDao">
+
+    <resultMap id="BaseResultMap" type="com.example.springboot.dao.AccAllotPassBo">
+        <id column="account" property="account" jdbcType="VARCHAR"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+        <result column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="shortname" property="shortname" jdbcType="VARCHAR"/>
+        <result column="fullname" property="fullname" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_List">
+        account,password,id,shortname,fullname
+    </sql>
+
+    <select id="getAll" resultMap="BaseResultMap">
+        select <include refid="Base_List"></include>
+        from account_password
+    </select>
+
+    <insert id="AccAllotPass" parameterType="java.util.List">
+        insert into account_password(account,password,id,shortname,fullname)values
+        <foreach collection="accAllotPass" item="item" separator=",">
+            (#{item.account},#{item.password},#{item.id},#{item.shortname},#{item.fullname})
+        </foreach>
+    </insert>
+    
+    <delete id="delAccountByid" parameterType="com.example.springboot.dao.AccAllotPassBo">
+        delete from account_password where id=#{id} and account in
+        <foreach collection="account" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </delete>
+
+    <update id="updateAccountUserById" parameterType="com.example.springboot.dao.AccAllotPassBo">
+        update account_password
+        <set>
+            <if test="account!=null">
+                account=#{account},
+            </if>
+
+            <if test="password!=null">
+            password=#{password},
+            </if>
+
+            <if test="shorname!=null">
+                shortname=#{shortname},
+            </if>
+
+            <if test="fullname">
+                fullname=#{fullname}
+            </if>
+        </set>
+        where
+        id=#{id}
+    </update>
+
+</mapper>

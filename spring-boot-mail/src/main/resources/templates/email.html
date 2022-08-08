@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>邮件模版</title>
+</head>
+    <body>
+      邮件模板生成的邮件，点击链接可以查看详情！
+        <a href="#" th:href="@{http://www.baidu.com/}">查看详情。</a>
+      当前的Code为：<span th:text="${code}"></span>
+    </body>
+</html>

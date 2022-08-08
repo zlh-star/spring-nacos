@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.springboottest.dao.UserDao" >
+    <resultMap id="BaseResultMap" type="com.example.springboottest.model.UserModel">
+        <id column="accountId" property="accountId" jdbcType="VARCHAR"/>
+        <result column="accountName" property="accountName" jdbcType="VARCHAR"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+        <result column="createData" property="createData" jdbcType="VARCHAR"/>
+    </resultMap>
+
+<!--    <resultMap id="UserCondition" type="com.example.springboottest.model.UserCondition">-->
+<!--        <id column="begin" property="begin" jdbcType="VARCHAR"/>-->
+<!--        <result column="end" property="end" jdbcType="VARCHAR"/>-->
+<!--        <result column="pageEnd" property="pageEnd" jdbcType="VARCHAR"/>-->
+<!--        <result column="createData" property="createData" jdbcType="VARCHAR"/>-->
+<!--    </resultMap>-->
+    <sql id="Base_Column_List">
+        accountId,accountName,password,createData
+    </sql>
+
+    <select id="getAllAccount" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"></include>
+        from account
+    </select>
+
+    <select id="page" resultMap="BaseResultMap">
+        select *
+        from account
+    </select>
+
+<!--    <select id="selectAccount" resultMap="BaseResultMap" parameterType="java.util.List">-->
+<!--        select a.accountId,a.accountName,a.password-->
+<!--        from account a-->
+<!--        where a.accountId=#{accountId}-->
+<!--    </select>-->
+
+    <select id="selectAccount" resultMap="BaseResultMap" parameterType="java.util.List">
+        select <include refid="Base_Column_List"></include>
+        from account
+        where accountId=#{accountId}
+    </select>
+
+    <select id="selectAllAccount" parameterType="com.example.springboottest.model.UserModel">
+        select <include refid="Base_Column_List"></include>
+        from account
+       limit #{begin},#{end}
+    </select>
+    
+<!--    <select id="getAllAccount" resultType="int">-->
+<!--        select count(*)-->
+<!--        from account-->
+<!--        where accountId=#{accountId}-->
+<!--    </select>-->
+
+    <insert id="insertAccount" parameterType="com.example.springboottest.model.UserModel">
+        insert into account (accountId,accountName,password,createData)
+        values
+        <foreach collection="userModel" item="item" separator=","  open="(" close=")" index="index" >
+            #{item.accountId},#{item.accountName},#{item.password},#{item.createData}
+        </foreach>
+<!--&#45;&#45;         values-->
+<!--&#45;&#45;         (#{accountId},#{accountName},#{password},#{createData})-->
+    </insert>
+
+    <update id="updateAccount" parameterType="com.example.springboottest.model.UserModel">
+        update <include refid="Base_Column_List"></include>
+        <set>
+<!--            <if test="accountId!=null and accountId!=''">-->
+<!--                accountId=#{accountId},-->
+<!--            </if>-->
+            <if test="accountName!=null and accountName!=''">
+                accountName=#{accountName},
+            </if>
+            <if test="password!=null and password!=''">
+                password=#{password},
+            </if>
+            <if test="createData!=null and createData!=''">
+                createData=#{createData},
+            </if>
+        </set>
+        where
+        accountId=#{accountId}
+    </update>
+
+    <update id="update" parameterType="com.example.springboottest.model.UserModel">
+        update <include refid="Base_Column_List"></include>
+        <set>
+            <!--            <if test="accountId!=null and accountId!=''">-->
+            <!--                accountId=#{accountId},-->
+            <!--            </if>-->
+            <if test="accountName!=null and accountName!=''">
+                accountName=#{accountName},
+            </if>
+            <if test="password!=null and password!=''">
+                password=#{password},
+            </if>
+            <if test="createData!=null and createData!=''">
+                createData=#{createData},
+            </if>
+        </set>
+        where
+        accountId=#{accountId}
+    </update>
+
+    <delete id="deleteAccount" parameterType="com.example.springboottest.model.UserModel">
+        delete from account
+        where accountId in
+        <foreach collection="userModelList" item="item" open="(" close=")" separator=",">
+            #{item.accountId}
+        </foreach>
+    </delete>
+
+</mapper>

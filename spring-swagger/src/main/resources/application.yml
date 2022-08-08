@@ -1,0 +1,31 @@
+server:
+  port: 8098
+spring:
+  data:
+    mongodb:
+#      username:
+#      password:
+      port: 27017
+      host: localhost
+      database: zlh
+  application:
+    name: spring-swagger
+  profiles:
+    active: dev
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+  datasource:
+    url: jdbc:mysql://localhost:3306/mysql
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
