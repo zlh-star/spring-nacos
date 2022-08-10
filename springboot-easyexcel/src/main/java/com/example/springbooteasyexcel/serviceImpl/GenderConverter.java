@@ -6,6 +6,7 @@ import com.alibaba.excel.metadata.CellData;
 import com.alibaba.excel.metadata.GlobalConfiguration;
 import com.alibaba.excel.metadata.property.ExcelContentProperty;
 
+//自定义转换器
 public class GenderConverter implements Converter<Integer> {
 
     private static final String MAN = "男";
