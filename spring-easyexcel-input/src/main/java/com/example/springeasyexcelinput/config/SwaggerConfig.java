@@ -34,7 +34,7 @@ public class SwaggerConfig {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("批量导入数据(easyexcel)")
+                .title("批量导入导出数据(easyexcel)")
                 .description("尚德敏学，唯实唯新")
                 .termsOfServiceUrl("https://www.baidu.com/")
                 .contact(new Contact("zlh","https://www.cnblogs.com/zlh13437/","zhaolinhai@outlook.com"))
