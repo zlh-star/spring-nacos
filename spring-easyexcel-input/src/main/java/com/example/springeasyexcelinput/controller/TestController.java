@@ -7,6 +7,7 @@ import com.example.springeasyexcelinput.dto.UserDto;
 import com.example.springeasyexcelinput.service.UserMapper;
 import com.example.springeasyexcelinput.service.UserserviceImpl;
 import com.example.springeasyexcelinput.service.Uservice;
+import com.example.springeasyexcelinput.service.WaterMarkHandler;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +60,11 @@ public class TestController {
     public void exportMembers1(HttpServletResponse response, String fileName, String pageNum, String pageSize ) throws IOException {
         List<UserDto> pageList = new ArrayList<>();
         List<UserDto> members = uservice.selectList(null);
+        StringBuilder stringBuilder=new StringBuilder();
+        stringBuilder.append("省份号码")
+                .append(" ").append("组织号码")
+                .append(" ").append("测试水印");
+        String ceshi=stringBuilder.toString();
         int count=0;
         int pageno=Integer.parseInt(pageNum);
         int pagesize=Integer.parseInt(pageSize);
@@ -78,6 +84,9 @@ public class TestController {
         // 设置响应头
         String fileName1 = URLEncoder.encode(fileName, "UTF-8").replaceAll("\\+", "%20");
         response.setHeader("Content-disposition", "attachment;filename="+fileName1+".xlsx");
-        EasyExcel.write(response.getOutputStream(), UserDto.class).sheet().doWrite(pageList);
+        EasyExcel.write(response.getOutputStream(), UserDto.class)
+                .inMemory(true)
+                .registerWriteHandler(new WaterMarkHandler(ceshi))
+                .sheet().doWrite(pageList);
     }
 }
