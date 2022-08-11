@@ -49,8 +49,8 @@
         <module>springcloud-provider-okhttp2</module>
         <module>lowcode-crud</module>
         <module>menu-test</module>
-<!--        <module>spring-boot-elastic</module>-->
-<!--        <module>elastic</module>-->
+        <module>springboot-easyexcel</module>
+        <module>spring-easyexcel-input</module>
     </modules>
 
 
