@@ -5,8 +5,10 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.springbooteasyexcel.dao.User;
 import com.example.springbooteasyexcel.service.Uservice;
+import com.example.springbooteasyexcel.service.WaterMarkHandler;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,6 +24,9 @@ public class UserController {
 
     @Autowired
     private Uservice uservice;
+
+    @Value("${water.switch}")
+    private String waterswitch;
 
     @ApiOperation(value = "导出excel",tags = "浏览器导出")
     @RequestMapping(value = "/export",method = RequestMethod.POST)
@@ -57,6 +62,13 @@ public class UserController {
         // 设置响应头
         String fileName1 = URLEncoder.encode(fileName, "UTF-8").replaceAll("\\+", "%20");
         response.setHeader("Content-disposition", "attachment;filename="+fileName1+".xlsx");
-        EasyExcel.write(response.getOutputStream(), User.class).sheet().doWrite(pageList);
+        if("true".equals(waterswitch)){
+            EasyExcel.write(response.getOutputStream(), User.class)
+                    .inMemory(true)
+                    .registerWriteHandler(new WaterMarkHandler("测试","水印"))
+                    .sheet().doWrite(pageList);
+        }
+        EasyExcel.write(response.getOutputStream(), User.class)
+                .sheet().doWrite(pageList);
     }
 }
