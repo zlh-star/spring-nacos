@@ -23,14 +23,16 @@ import java.io.IOException;
 public class WaterMarkHandler implements SheetWriteHandler {
 
     private final String WATER_MARK;
+    private final String TEST;
 
-    public static ByteArrayOutputStream createWaterMark(String content) throws IOException {
+    public static ByteArrayOutputStream createWaterMark(String content,String test) throws IOException {
         int width = 200;
         int height = 150;
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);// 获取bufferedImage对象
         String fontType = "微软雅黑";
         int fontStyle = Font.BOLD;
         int fontSize = 20;
+
         Font font = new Font(fontType, fontStyle, fontSize);
         Graphics2D g2d = image.createGraphics(); // 获取Graphics2d对象
         image = g2d.getDeviceConfiguration().createCompatibleImage(width, height, Transparency.TRANSLUCENT);
@@ -41,13 +43,23 @@ public class WaterMarkHandler implements SheetWriteHandler {
         g2d.setFont(font); // 设置字体类型  加粗 大小
         g2d.rotate(-0.5, (double) image.getWidth() / 2, (double) image.getHeight() / 2);//设置倾斜度
         FontRenderContext context = g2d.getFontRenderContext();
+        float fontHeigth1 = font.getSize2D();
+        float fontHeigth2 = (int)font.getSize2D();
+        int tempHeight = (int) (fontHeigth1*2+10);
         Rectangle2D bounds = font.getStringBounds(content, context);
+        Rectangle2D bound = font.getStringBounds(test, context);
+        double x1 = (width - bound.getWidth()) / 2;
+//        double y1 = (height - bound.getHeight()) / 2;
+//        double ascent1 = -bound.getY();
+//        double baseY1 = y1 + ascent1;
+
         double x = (width - bounds.getWidth()) / 2;
-        double y = (height - bounds.getHeight()) / 2;
-        double ascent = -bounds.getY();
-        double baseY = y + ascent;
-        // 写入水印文字原定高度过小，所以累计写水印，增加高度
-        g2d.drawString(content, (int) x, (int) baseY);
+//        double y = (height - bounds.getHeight()) / 2;
+//        double ascent = -bounds.getY();
+//        double baseY = y + ascent;
+        //将不同水印换行输出
+        g2d.drawString(content, (int) x, fontHeigth2+10 +tempHeight);
+        g2d.drawString(test,(int) x1,fontHeigth2*2+10 +tempHeight);
         // 设置透明度
         g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
         // 释放对象
@@ -81,7 +93,7 @@ public class WaterMarkHandler implements SheetWriteHandler {
     @SneakyThrows
     @Override
     public void afterSheetCreate(WriteWorkbookHolder writeWorkbookHolder, WriteSheetHolder writeSheetHolder) {
-        try (ByteArrayOutputStream waterMark = createWaterMark(WATER_MARK)){
+        try (ByteArrayOutputStream waterMark = createWaterMark(WATER_MARK,TEST)){
             XSSFSheet sheet = (XSSFSheet) writeSheetHolder.getSheet();
             putWaterRemarkToExcel(sheet, waterMark.toByteArray());
         }
