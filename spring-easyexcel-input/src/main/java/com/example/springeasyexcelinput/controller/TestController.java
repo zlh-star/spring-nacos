@@ -28,14 +28,19 @@ import java.util.stream.Collectors;
 @Api(value = "批量导入导出测试")
 @RestController
 public class TestController {
+
     @Autowired
-    private UserMapper uservice;
+    private Uservice uservice;
+
+    @Autowired
+    private UserMapper userMapper;
 
     @Value("${water.switch}")
     private String waterswitch;
 
 
     //大约可60万条
+    //测试10万条需要三分钟左右
     @RequestMapping(value = "/input",method = RequestMethod.POST)
     @ApiOperation(value = "导入测试",tags = "批量导入excel数据")
     public Object excelInput(MultipartFile file) throws IOException {
@@ -48,22 +53,22 @@ public class TestController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        //mybatis-plus去重
-        QueryWrapper<UserDto> queryWrapper=new QueryWrapper<>();
-        queryWrapper.select("distinct username,password,sex,birth,email");
-        //stream去重
-        userDtoList1=uservice.selectList(null).stream().distinct().collect(Collectors.toList());
-        System.out.println(userDtoList1);
-        userDtoList= uservice.selectList(queryWrapper);
-        return userDtoList;
-//        return 0;
+//        //mybatis-plus去重
+//        QueryWrapper<UserDto> queryWrapper=new QueryWrapper<>();
+//        queryWrapper.select("distinct username,password,sex,birth,email");
+//        //stream去重
+//        userDtoList1=uservice.selectList(null).stream().distinct().collect(Collectors.toList());
+//        System.out.println(userDtoList1);
+//        userDtoList= uservice.selectList(queryWrapper);
+//        return userDtoList;
+        return "成功";
     }
 
     @ApiOperation(value = "浏览器导出",tags = "浏览器导出excel")
     @RequestMapping(value = "/export",method = RequestMethod.POST)
     public void exportMembers1(HttpServletResponse response, String fileName, String pageNum, String pageSize ) throws IOException {
         List<UserDto> pageList = new ArrayList<>();
-        List<UserDto> members = uservice.selectList(null);
+        List<UserDto> members = userMapper.selectList(null);
         StringBuilder stringBuilder=new StringBuilder();
         stringBuilder.append("省份号码")
                 .append(" ").append("组织号码")

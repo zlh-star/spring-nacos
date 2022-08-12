@@ -17,8 +17,10 @@ import java.util.stream.Collectors;
 @Service("UserMapper")
 public class UserserviceImpl extends AnalysisEventListener<UserDto>{
 
+//    @Autowired
+//    private UserMapper userMapper;
     @Autowired
-    private UserMapper userMapper;
+    private Uservice uservice;
 
     private static final int BATCH_COUNT = 2000;
 
@@ -26,8 +28,8 @@ public class UserserviceImpl extends AnalysisEventListener<UserDto>{
 
     }
 
-    public UserserviceImpl(UserMapper userMapper){
-        this.userMapper=userMapper;
+    public UserserviceImpl(Uservice uservice){
+        this.uservice=uservice;
 
     }
 
@@ -40,7 +42,7 @@ public class UserserviceImpl extends AnalysisEventListener<UserDto>{
 //       List<UserDto> userDtos= userAllList.stream().distinct().collect(Collectors.toList());
 //        if (userList.size() <= BATCH_COUNT) {
         userList.forEach(userDto1 -> {
-                userMapper.insert(userDto1);
+            uservice.insertDto(userDto1);
             });
 
 //        }
@@ -56,7 +58,7 @@ public class UserserviceImpl extends AnalysisEventListener<UserDto>{
     public void doAfterAllAnalysed(AnalysisContext analysisContext) {
         List<UserDto> userList=new ArrayList<>();
         userList.forEach(userDto1 -> {
-            userMapper.insert(userDto1);
+            uservice.insertDto(userDto1);
         });
     }
 
