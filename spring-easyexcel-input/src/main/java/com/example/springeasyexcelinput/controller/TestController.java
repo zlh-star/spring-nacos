@@ -4,7 +4,6 @@ import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.support.ExcelTypeEnum;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.springeasyexcelinput.dto.UserDto;
-import com.example.springeasyexcelinput.service.UserMapper;
 import com.example.springeasyexcelinput.service.UserserviceImpl;
 import com.example.springeasyexcelinput.service.Uservice;
 import com.example.springeasyexcelinput.service.WaterMarkHandler;
@@ -32,15 +31,16 @@ public class TestController {
     @Autowired
     private Uservice uservice;
 
-    @Autowired
-    private UserMapper userMapper;
+//    @Autowired
+//    private UserMapper userMapper;
 
     @Value("${water.switch}")
     private String waterswitch;
 
 
-    //大约可60万条
-    //测试10万条需要三分钟左右
+    //大约可1,033,147,176,106.771万条
+    //测试10万条需要3分钟左右
+    //测试15万条需要5分钟左右
     @RequestMapping(value = "/input",method = RequestMethod.POST)
     @ApiOperation(value = "导入测试",tags = "批量导入excel数据")
     public Object excelInput(MultipartFile file) throws IOException {
@@ -68,7 +68,7 @@ public class TestController {
     @RequestMapping(value = "/export",method = RequestMethod.POST)
     public void exportMembers1(HttpServletResponse response, String fileName, String pageNum, String pageSize ) throws IOException {
         List<UserDto> pageList = new ArrayList<>();
-        List<UserDto> members = userMapper.selectList(null);
+        List<UserDto> members = uservice.selectList(null);
         StringBuilder stringBuilder=new StringBuilder();
         stringBuilder.append("省份号码")
                 .append(" ").append("组织号码")

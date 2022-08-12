@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.List;
 
 @Mapper
-public interface Uservice {
+public interface Uservice extends BaseMapper<UserDto> {
 //    void importExcel(MultipartFile file) throws IOException;
 void insertDto(UserDto userDto);
 }
