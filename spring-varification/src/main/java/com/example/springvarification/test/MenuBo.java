@@ -1,0 +1,263 @@
+package com.example.springvarification.test;
+
+
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+import java.util.List;
+
+@ApiModel(description = "菜单配置对象bo")
+@TableName(value = "lc_menu")
+public class MenuBo {
+
+    @ApiModelProperty(value ="菜单ID",name = "menuId")
+//    @TableId(value = "menuId")
+    @TableField(value = "MENU_ID")
+    private String menuId;// 菜单ID
+
+    @ApiModelProperty(value ="上级菜单ID",name = "menuParentId")
+//    @TableId(value = "menuParentId")
+    @TableField(value = "MENU_PARENTID")
+    private String menuParentId;// 上级菜单ID
+
+    @ApiModelProperty(value ="菜单索引",name = "menuIndex")
+//    @TableId(value = "menuIndex")
+    @TableField(value = "MENU_INDEX")
+    private String menuIndex;// 菜单索引
+
+    @ApiModelProperty(value ="菜单名称",name = "menuTitle")
+//    @TableId(value = "menuTitle")
+    @TableField(value = "MENU_TITLE")
+    private String menuTitle;//菜单名称
+
+    @ApiModelProperty(value ="菜单路径",name = "menuPath")
+//    @TableId(value = "menuPath")
+    @TableField(value = "MENU_PATH")
+    private String menuPath;
+
+    @ApiModelProperty(value ="菜单图标",name = "menuIcon")
+//    @TableId(value = "menuIcon")
+    @TableField(value = "MENU_ICON")
+    private String menuIcon;// 菜单图标
+
+    @ApiModelProperty(value ="菜单类型",name = "menuKind")
+//    @TableId(value = "menuKind")
+    @TableField(value ="MENU_KIND" )
+    private String menuKind;// 菜单类型
+
+    @ApiModelProperty(value ="",name = "menuObjPath")
+//    @TableId(value = "menuObjPath")
+    @TableField(value = "MENU_OBJ_PATH")
+    private String menuObjPath;//菜单路径
+
+    @ApiModelProperty(value ="",name = "menuAppName")
+//    @TableId(value = "accountId")
+    @TableField(value = "MENU_APP_NAME")
+    private String menuAppName;
+
+    @ApiModelProperty(value ="菜单状态",name = "menuState")
+//    @TableId(value = "menuState")
+    @TableField(value = "MENU_STATE")
+    private String menuState;// 菜单状态
+
+    @ApiModelProperty(value ="是否为权限项",name = "actionAuthorized")
+//    @TableId(value = "actionAuthorized")
+    @TableField(value = "ACTION_AUTHORIZED")
+    private String actionAuthorized;// 是否为权限项
+
+    @ApiModelProperty(value ="是否为普通项",name = "actionNormal")
+//    @TableId(value = "actionNormal")
+    @TableField(value = "ACTION_NORMAL")
+    private String actionNormal;// 是否为普通项
+
+    @ApiModelProperty(value ="是否为系统项",name = "actionSystemic")
+//    @TableId(value = "actionSystemic")
+    @TableField(value = "ACTION_SYSTEMIC")
+    private String actionSystemic;// 是否为系统项
+
+    @ApiModelProperty(value ="是否为安全项",name = "actionSafe")
+    @TableField(value = "ACTION_SAFE")
+    private String actionSafe;// 是否为安全项
+
+    @ApiModelProperty(value ="是否为审计项",name = "actionAudit")
+    @TableField(value = "ACTION_AUDIT")
+    private String actionAudit;// 是否为审计项
+
+    @ApiModelProperty(value ="",name = "actionType")
+    @TableField(value = "ACTION_TYPE")
+    private String actionType;
+
+//    @TableField(value = "isLeaf")
+    private String isLeaf;// 是否是叶节点
+
+    @ApiModelProperty(value ="菜单下级",name = "childrenList")
+    private List<MenuBo> childrenList;
+
+    public List<MenuBo> getChildrenList() {
+        return childrenList;
+    }
+
+    public void setChildrenList(List<MenuBo> childrenList) {
+        this.childrenList = childrenList;
+    }
+
+    public String getIsLeaf() {
+        return isLeaf;
+    }
+
+    public void setIsLeaf(String isLeaf) {
+        this.isLeaf = isLeaf;
+    }
+
+    @Override
+    public String toString() {
+        return "MenuBo{" +
+                "menuId='" + menuId + '\'' +
+                ", menuParentId='" + menuParentId + '\'' +
+                ", menuIndex='" + menuIndex + '\'' +
+                ", menuTitle='" + menuTitle + '\'' +
+                ", menuPath='" + menuPath + '\'' +
+                ", menuIcon='" + menuIcon + '\'' +
+                ", menuKind='" + menuKind + '\'' +
+                ", menuObjPath='" + menuObjPath + '\'' +
+                ", menuAppName='" + menuAppName + '\'' +
+                ", menuState='" + menuState + '\'' +
+                ", actionAuthorized='" + actionAuthorized + '\'' +
+                ", actionNormal='" + actionNormal + '\'' +
+                ", actionSystemic='" + actionSystemic + '\'' +
+                ", actionSafe='" + actionSafe + '\'' +
+                ", actionAudit='" + actionAudit + '\'' +
+                ", actionType='" + actionType + '\'' +
+                '}';
+    }
+
+    public String getMenuId() {
+        return menuId;
+    }
+
+    public void setMenuId(String menuId) {
+        this.menuId = menuId;
+    }
+
+    public String getMenuParentId() {
+        return menuParentId;
+    }
+
+    public void setMenuParentId(String menuParentId) {
+        this.menuParentId = menuParentId;
+    }
+
+    public String getMenuIndex() {
+        return menuIndex;
+    }
+
+    public void setMenuIndex(String menuIndex) {
+        this.menuIndex = menuIndex;
+    }
+
+    public String getMenuTitle() {
+        return menuTitle;
+    }
+
+    public void setMenuTitle(String menuTitle) {
+        this.menuTitle = menuTitle;
+    }
+
+    public String getMenuPath() {
+        return menuPath;
+    }
+
+    public void setMenuPath(String menuPath) {
+        this.menuPath = menuPath;
+    }
+
+    public String getMenuIcon() {
+        return menuIcon;
+    }
+
+    public void setMenuIcon(String menuIcon) {
+        this.menuIcon = menuIcon;
+    }
+
+    public String getMenuKind() {
+        return menuKind;
+    }
+
+    public void setMenuKind(String menuKind) {
+        this.menuKind = menuKind;
+    }
+
+    public String getMenuObjPath() {
+        return menuObjPath;
+    }
+
+    public void setMenuObjPath(String menuObjPath) {
+        this.menuObjPath = menuObjPath;
+    }
+
+    public String getMenuAppName() {
+        return menuAppName;
+    }
+
+    public void setMenuAppName(String menuAppName) {
+        this.menuAppName = menuAppName;
+    }
+
+    public String getMenuState() {
+        return menuState;
+    }
+
+    public void setMenuState(String menuState) {
+        this.menuState = menuState;
+    }
+
+    public String getActionAuthorized() {
+        return actionAuthorized;
+    }
+
+    public void setActionAuthorized(String actionAuthorized) {
+        this.actionAuthorized = actionAuthorized;
+    }
+
+    public String getActionNormal() {
+        return actionNormal;
+    }
+
+    public void setActionNormal(String actionNormal) {
+        this.actionNormal = actionNormal;
+    }
+
+    public String getActionSystemic() {
+        return actionSystemic;
+    }
+
+    public void setActionSystemic(String actionSystemic) {
+        this.actionSystemic = actionSystemic;
+    }
+
+    public String getActionSafe() {
+        return actionSafe;
+    }
+
+    public void setActionSafe(String actionSafe) {
+        this.actionSafe = actionSafe;
+    }
+
+    public String getActionAudit() {
+        return actionAudit;
+    }
+
+    public void setActionAudit(String actionAudit) {
+        this.actionAudit = actionAudit;
+    }
+
+    public String getActionType() {
+        return actionType;
+    }
+
+    public void setActionType(String actionType) {
+        this.actionType = actionType;
+    }
+}
