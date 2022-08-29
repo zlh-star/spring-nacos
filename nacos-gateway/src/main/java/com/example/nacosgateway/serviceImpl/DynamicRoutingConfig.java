@@ -44,6 +44,7 @@ public class DynamicRoutingConfig implements ApplicationEventPublisherAware {
     @Autowired
     private RouteDefinitionWriter routeDefinitionWriter;
 
+    @Autowired
     private ApplicationEventPublisher applicationEventPublisher;
 
     //负责监听nacos配置变化
