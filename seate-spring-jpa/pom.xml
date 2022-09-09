@@ -107,6 +107,14 @@
         </dependencies>
     </dependencyManagement>
 
+    <distributionManagement>
+        <repository>
+            <id>ls</id>
+            <name>ls</name>
+            <url>http://172.26.22.17:8081/nexus/content/groups/public</url>
+        </repository>
+    </distributionManagement>
+
     <build>
         <resources>
             <resource>
@@ -135,5 +143,6 @@
             </plugin>
         </plugins>
     </build>
+
 
 </project>
