@@ -10,5 +10,5 @@ public interface AccountDao extends CrudRepository<Account,Long> {
 
     @Modifying
     @Query("UPDATE Account SET balance=balance-:balan WHERE id=:userId")
-    Integer reduceBalance(@Param("userId") Long userId,@Param("Integer balance") Integer balan);
+    Integer reduceBalance(@Param("userId") Long userId,@Param("balan") Integer balan);
 }

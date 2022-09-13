@@ -1,4 +1,4 @@
-package com.example.orderserver.service;
+package com.example.orderserver.service.Impl;
 
 import com.example.common.OperationResponse;
 import com.example.common.order.OrderBo;
@@ -7,6 +7,7 @@ import com.example.common.storage.StorageBo;
 import com.example.orderserver.dao.OrderDao;
 import com.example.orderserver.model.Order;
 import com.example.orderserver.model.OrderStatus;
+import com.example.orderserver.service.OrderService;
 import io.seata.core.context.RootContext;
 import io.seata.spring.annotation.GlobalTransactional;
 import lombok.extern.slf4j.Slf4j;
@@ -24,8 +25,8 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private OrderDao orderDao;
 
-    private final String STORAGE_SERVICE_HOST = "http://spring-cloud-storage-server/storage";
-    private final String PAY_SERVICE_HOST = "http://spring-cloud-pay-server/pay";
+    private final String STORAGE_SERVICE_HOST = "http://storage-server/stock";
+    private final String PAY_SERVICE_HOST = "http://pay-server/reduce";
 
     @Override
     @GlobalTransactional
@@ -39,6 +40,18 @@ public class OrderServiceImpl implements OrderService {
                 .status(OrderStatus.INIT)
                 .payAmount(price)
                 .build();
+
+
+        // 扣减余额
+        log.info("开始扣减余额");
+        PayBo reduceBalanceRequestVO = PayBo.builder()
+                .userId(orderBo.getUserId())
+                .price(price)
+                .build();
+
+        String reduceBalanceUrl = String.format("%s/reduceBalance", PAY_SERVICE_HOST);
+        OperationResponse balanceOperationResponse = restTemplate.postForObject(reduceBalanceUrl, reduceBalanceRequestVO, OperationResponse.class);
+        log.info("扣减余额结果:{}", balanceOperationResponse);
 
         order = orderDao.save(order);
 
@@ -55,16 +68,6 @@ public class OrderServiceImpl implements OrderService {
         OperationResponse storageOperationResponse = restTemplate.postForObject(storageReduceUrl, storageBo, OperationResponse.class);
         log.info("扣减库存结果:{}", storageOperationResponse);
 
-        // 扣减余额
-        log.info("开始扣减余额");
-        PayBo reduceBalanceRequestVO = PayBo.builder()
-                .userId(orderBo.getUserId())
-                .price(price)
-                .build();
-
-        String reduceBalanceUrl = String.format("%s/reduceBalance", PAY_SERVICE_HOST);
-        OperationResponse balanceOperationResponse = restTemplate.postForObject(reduceBalanceUrl, reduceBalanceRequestVO, OperationResponse.class);
-        log.info("扣减余额结果:{}", balanceOperationResponse);
 
         Integer updateOrderRecord = orderDao.updateOrder(order.getId(), OrderStatus.SUCCESS);
         log.info("更新订单:{} {}", order.getId(), updateOrderRecord > 0 ? "成功" : "失败");

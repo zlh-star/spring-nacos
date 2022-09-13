@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @Api(tags = "下单")
@@ -19,7 +20,7 @@ public class OrderController {
     private OrderService orderService;
 
     @ApiOperation(value = "下单",tags = "下单")
-    @RequestMapping("/order")
+    @RequestMapping(value = "/order",method = RequestMethod.POST)
     public OperationResponse order(@RequestBody OrderBo orderBo){
         try {
             return orderService.placeOrder(orderBo);

@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @Api(tags = "扣除余额")
@@ -19,7 +20,7 @@ public class PayController {
     private PayService payService;
 
     @ApiOperation(value = "扣除余额",notes = "扣除")
-    @RequestMapping("/reduceBalance")
+    @RequestMapping(value = "/reduceBalance",method = RequestMethod.POST)
     public OperationResponse reduceBalance(@RequestBody PayBo payBo) throws Exception {
         try {
             return payService.reduceBalance(payBo);
