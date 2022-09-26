@@ -13,7 +13,7 @@ public class UserController {
         User user=new User();
         user.setName("zhaolinhai");
         user.setAge("22");
-        user.setEmail("2248416786@@139.com");
+        user.setEmail("2248416786@139.com");
         model.addAttribute("user",user);
         return "index";
     }

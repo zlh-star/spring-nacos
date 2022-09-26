@@ -123,7 +123,7 @@ public class AccountController {
         userModel1.setCreateData(date);
         userModels.add(userModel1);
         try {
-            if(userModels!=null&&userModels.size()>0){
+            if(userModels.size() > 0){
                 return userServiceDao.save(userModel1)
                         .onErrorResume(e ->userServiceDao.findByAccountName(userModel.getAccountId())
                                 .flatMap(originalUser ->{

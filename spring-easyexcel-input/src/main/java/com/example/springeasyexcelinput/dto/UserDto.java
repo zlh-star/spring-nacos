@@ -9,12 +9,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @TableName("user1")
 public class UserDto {
-    @TableField(value = "username")
+//    @TableField(value = "username")
+    @TableId(value = "username",type = IdType.ASSIGN_UUID)
     @ExcelProperty(value = "用户名")
     private String username;
 
