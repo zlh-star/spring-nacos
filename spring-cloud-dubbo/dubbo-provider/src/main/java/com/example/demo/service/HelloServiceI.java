@@ -1,11 +1,12 @@
 package com.example.demo.service;
 
 import com.example.dubboapi.service.HelloService;
+import com.example.dubboapi.service.Person;
 import com.example.dubboapi.service.User;
-import org.apache.dubbo.config.annotation.DubboReference;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
 
 @DubboService
 @Service
@@ -16,10 +17,25 @@ public class HelloServiceI implements HelloService {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private UserMonoMapper userMonoMapper;
+
     @Override
     public void hello(User user) {
         userMapper.insert(user);
     }
+
+    @Override
+    public Mono<Person> save(Person person) {
+        Mono<Person> personMono=null;
+        try {
+          personMono=userMonoMapper.save(person);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return personMono ;
+    }
+
 
 //    @Override
 //    public String hello(String name) {

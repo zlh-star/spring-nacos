@@ -2,9 +2,11 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
+import java.nio.charset.StandardCharsets;
 import java.security.*;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
+import java.util.Base64;
 
 public class RSATest {
 
@@ -26,15 +28,24 @@ public class RSATest {
         //需要加密的密文
         String encryptText="123456";
 
-        byte[] bytes=encryptText.getBytes();
+        byte[] bytes=encryptText.getBytes(StandardCharsets.UTF_8);
+
 
         //使用公钥进行加密
-        byte e[]=encrypt.encrypt(rsaPublicKey,bytes);
+        final Base64.Encoder encoder = Base64.getEncoder();
+        //Base64加密
+        byte[] enpasswordByte = encoder.encode(bytes);
+        //公钥加密
+        byte e[]=encrypt.encrypt(rsaPublicKey,enpasswordByte);
         System.out.println("加密后的内容为:"+new String(e));
 
         //使用私钥进行解密
+        final Base64.Decoder decoder=Base64.getDecoder();
+        //解密
         byte de[]=encrypt.decrypt(rsaPrivateKey,e);
-        System.out.println("解密后的内容为:"+new String(de));
+        //Base64解码
+        byte[] depasswordByte=decoder.decode(de);
+        System.out.println("解密后的内容为:"+new String(depasswordByte));
 
     }
 

@@ -1,8 +1,5 @@
 package com.example.dubboapi.service;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,18 +10,15 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.io.Serializable;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-@TableName("user2")
-public class User implements Serializable {
-    @TableId(value = "id")
+@NoArgsConstructor
+@Document(collection = "user2")
+public class Person implements Serializable {
+    @Id
     private String id;
 
-    @TableField("nickName")
-    private String nickName;
+    @Indexed
+    private String name;
 
-    @TableField("age")
     private String age;
-
-
 }

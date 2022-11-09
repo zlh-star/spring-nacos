@@ -10,19 +10,16 @@ public class CacheListener{
     }
 
     public void startListen() {
-        new Thread(){
-            @Override
-            public void run() {
-                while (true) {
-                    for(String key : cacheManagerImpl.getAllKeys()) {
-                        if (cacheManagerImpl.isTimeOut(key)) {
-                            cacheManagerImpl.clearByKey(key);
-                            logger.info(key + "缓存被清除");
-                        }
+        new Thread(() -> {
+            while (true) {
+                for(String key : cacheManagerImpl.getAllKeys()) {
+                    if (cacheManagerImpl.isTimeOut(key)) {
+                        cacheManagerImpl.clearByKey(key);
+                        logger.info(key + "缓存被清除");
                     }
                 }
             }
-        }.start();
+        }).start();
 
     }
 }

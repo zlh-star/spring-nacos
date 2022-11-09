@@ -6,6 +6,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.util.StringUtils;
@@ -57,6 +58,14 @@ public class UserController {
         log.info("获得的sessionId的内容为",request.getSession().getAttribute("url"));
         return request.getRequestedSessionId();
     }
+
+//    @ApiOperation(value = "取",tags = "测试")
+//    @RequestMapping(value = "/select",method = RequestMethod.POST)
+//    public Object select(@RequestParam Long id){
+//        List<User> userList= (List<User>) userService.getUser(id);
+//        return userList;
+//    }
+
 
     @DeleteMapping("/delete")
     @ApiOperation(value = "删除用户",notes = "根据角色id对用户进行删除",tags = "在redis中进行保存")

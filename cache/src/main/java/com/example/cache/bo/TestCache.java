@@ -49,17 +49,14 @@ public class TestCache {
         final CacheManagerImpl cacheManagerImpl = new CacheManagerImpl();
         ExecutorService exec = Executors.newCachedThreadPool();
         for (int i = 0; i < 100; i++) {
-            exec.execute(new Runnable() {
-                @Override
-                public void run() {
-                    if (!cacheManagerImpl.isContains(key)) {
-                        cacheManagerImpl.putCache(key, 1, 0);
-                    } else {
-                        //因为+1和赋值操作不是原子性的，所以把它用synchronize块包起来
-                        synchronized (cacheManagerImpl) {
-                            int value = (Integer) cacheManagerImpl.getCacheDataByKey(key) + 1;
-                            cacheManagerImpl.putCache(key,value , 0);
-                        }
+            exec.execute(() -> {
+                if (!cacheManagerImpl.isContains(key)) {
+                    cacheManagerImpl.putCache(key, 1, 0);
+                } else {
+                    //因为+1和赋值操作不是原子性的，所以把它用synchronize块包起来
+                    synchronized (cacheManagerImpl) {
+                        int value = (Integer) cacheManagerImpl.getCacheDataByKey(key) + 1;
+                        cacheManagerImpl.putCache(key,value , 0);
                     }
                 }
             });
