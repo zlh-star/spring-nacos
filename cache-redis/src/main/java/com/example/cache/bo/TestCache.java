@@ -82,8 +82,7 @@ public class TestCache {
     @RequestMapping(value ="/select",method = RequestMethod.POST)
     public Object selectData(@RequestParam String key,
                              @RequestParam Long begin,
-                             @RequestParam Long end
-    ){
+                             @RequestParam Long end){
         try {
             return stringRedisTemplate.opsForList().range(key,begin,end);
         } catch (Exception e) {
