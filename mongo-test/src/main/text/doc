@@ -1,0 +1,16 @@
+连接到实例.
+Connect to the instance.
+mongo --port 27017
+
+
+创建用户管理员.
+Create the user administrator.
+
+use admin
+db.createUser(
+  {
+    user: "zlh",
+    pwd: "123456",
+    roles: [ { role: "userAdminAnyDatabase", db: "admin" } ]
+  }
+)
