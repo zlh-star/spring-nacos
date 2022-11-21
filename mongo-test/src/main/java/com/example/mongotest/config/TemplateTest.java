@@ -95,9 +95,11 @@ public class TemplateTest {
       MongoCredential mongoCredential=MongoCredential.createCredential(username,database,password.toCharArray());
      //springboot需要与spring-boot-starter-data-mongodb版本一致，否则报错
       MongoClientOptions.Builder builder = new MongoClientOptions.Builder();
+              //host允许链接的最大链接数
       builder.connectionsPerHost(maxConnectionPerHost)
               .minConnectionsPerHost(minConnectionPerHost)
               .serverSelectionTimeout(serverSelectionsTimeout)
+              //线程队列数
               .threadsAllowedToBlockForConnectionMultiplier(threadsAllowedToBlockForConnection)
               .maxWaitTime(maxWaitTimes)
               .maxConnectionIdleTime(maxConnectionIdleTimes)

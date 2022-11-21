@@ -1,13 +1,21 @@
 package com.example.mongotest.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.example.mongotest.bean.User;
+import com.example.mongotest.config.Constant;
 import com.example.mongotest.config.Results;
+import com.mongodb.DB;
+import com.mongodb.DBObject;
+import com.mongodb.Mongo;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.BulkOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -23,6 +31,14 @@ public class TestController {
 
     @Autowired
     private MongoTemplate mongoTemplate;
+
+//    @ApiOperation(value = "",tags = "")
+//    @RequestMapping(value = "/insert",method = RequestMethod.POST)
+//    public void insert(@RequestBody List<User> userList){
+//        MongoDatabase mongoDatabase= mongoTemplate.getDb();
+//       mongoDatabase.getCollection("test").insertMany(userList);
+//        mongoCollection.insertMany(userList);
+//    }
 
     @ApiOperation(value ="mongo测试新增" ,tags = "新增")
     @RequestMapping(value = "/test",method = RequestMethod.POST)
@@ -63,6 +79,8 @@ public class TestController {
         query.addCriteria(Criteria.where("name").regex(user.getName()));
         //以年龄为基准，倒序排列
         query.with(Sort.by(Sort.Direction.DESC,"age"));
+        //范围查询
+        query.addCriteria(Criteria.where("age").gte(22).lte(23));
         query.with(pageable);
 //        query.limit(user.getPageSize());
 //        query.skip(user.getPageNo());
@@ -81,6 +99,42 @@ public class TestController {
         } catch (Exception e) {
             e.printStackTrace();
             return "删除失败";
+        }
+    }
+
+    @ApiOperation(value = "测试批量",tags = "测试")
+    @RequestMapping(value = "/test1",method = RequestMethod.POST)
+    public Object Test1(@RequestBody List<User> userList){
+        try {
+            BulkOperations operations=mongoTemplate.bulkOps(BulkOperations.BulkMode.UNORDERED, "test");
+            operations.insert(userList).execute();
+            return "成功";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "失败";
+        }
+    }
+    @ApiOperation(value = "测试删除",tags = "删除")
+    @RequestMapping(value = "/update",method = RequestMethod.POST)
+    public Object update(@RequestBody List<User> userList){
+        String collectName="test";
+        BulkOperations operations=mongoTemplate.bulkOps(BulkOperations.BulkMode.UNORDERED, collectName);
+        List<Query> queryList=new ArrayList<>();
+        try {
+            if(userList!=null&&userList.size()>0){
+                userList.forEach(user -> {
+                    Query query=new Query();
+                    query.addCriteria(Criteria.where("name").is(user.getName()));
+//              query.addCriteria(Criteria.where("age").gte(20).lte(22));
+                    queryList.add(query);
+                    operations.remove(queryList).execute();
+                });
+                return "成功";
+            }
+            return "入参list为空";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "失败";
         }
     }
 }
