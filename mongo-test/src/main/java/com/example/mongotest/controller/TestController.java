@@ -1,16 +1,23 @@
 package com.example.mongotest.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.example.mongotest.bean.User;
 import com.example.mongotest.config.Constant;
 import com.example.mongotest.config.Results;
 import com.mongodb.DB;
 import com.mongodb.DBObject;
 import com.mongodb.Mongo;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.bson.Document;
+import org.bson.conversions.Bson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -28,6 +35,8 @@ import java.util.List;
 @Api(value = "mongo测试")
 @RestController
 public class TestController {
+
+    private static Mongo mongo=null;
 
     @Autowired
     private MongoTemplate mongoTemplate;
@@ -117,8 +126,8 @@ public class TestController {
     @ApiOperation(value = "测试删除",tags = "删除")
     @RequestMapping(value = "/update",method = RequestMethod.POST)
     public Object update(@RequestBody List<User> userList){
-        String collectName="test";
-        BulkOperations operations=mongoTemplate.bulkOps(BulkOperations.BulkMode.UNORDERED, collectName);
+        String collectionName="test";
+        BulkOperations operations=mongoTemplate.bulkOps(BulkOperations.BulkMode.UNORDERED, collectionName);
         List<Query> queryList=new ArrayList<>();
         try {
             if(userList!=null&&userList.size()>0){
@@ -136,5 +145,45 @@ public class TestController {
             e.printStackTrace();
             return "失败";
         }
+    }
+
+    @ApiOperation(value = "connectPool",tags = "连接池")
+    @RequestMapping(value = "/connectPool",method = RequestMethod.POST)
+    public Object connectPool(@RequestBody List<User> userList){
+        String collectName="test1";
+        try {
+            MongoCollection<Document> mongoCollection =mongoTemplate.getCollection(collectName);
+            if(userList!=null&&userList.size()>0){
+                userList.forEach(user -> {
+                    List<Document> documents=new ArrayList<>();
+                    Document document=new Document();
+                    document.put(user.getId(), JSONObject.toJSON(user));
+                    documents.add(document);
+                    mongoCollection.insertMany(documents);
+                });
+                return "success";
+            }
+            return "入参不为空";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "false";
+        }
+    }
+
+    @ApiOperation(value = "按条件查找",tags = "查找")
+    @RequestMapping(value = "/findPool",method = RequestMethod.POST)
+    public Object findPool(@RequestParam String name){
+        String collectName="test";
+        MongoCollection<Document> mongoCollection =mongoTemplate.getCollection(collectName);
+        Bson bson= Filters.eq("name",name);
+//        Bson bson1=Filters.not();
+        FindIterable<Document> findIterable=mongoCollection.find(bson);
+        MongoCursor<Document> documentMongoCursor=findIterable.iterator();
+        List<Document> documents=new ArrayList<>();
+        while (documentMongoCursor.hasNext()){
+            Document document=documentMongoCursor.next();
+            documents.add(document);
+        }
+        return JSONArray.toJSON(documents);
     }
 }
