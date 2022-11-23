@@ -147,7 +147,7 @@ public class TestController {
         }
     }
 
-    @ApiOperation(value = "connectPool",tags = "连接池")
+    @ApiOperation(value = "connectPool",tags = "批量新增嵌入式文档")
     @RequestMapping(value = "/connectPool",method = RequestMethod.POST)
     public Object connectPool(@RequestBody List<User> userList){
         String collectName="test1";
@@ -157,7 +157,8 @@ public class TestController {
                 userList.forEach(user -> {
                     List<Document> documents=new ArrayList<>();
                     Document document=new Document();
-                    document.put(user.getId(), JSONObject.toJSON(user));
+                    //document.put中的key必须为指定唯一字段，不可为变量
+                    document.put("data", JSONObject.toJSON(user));
                     documents.add(document);
                     mongoCollection.insertMany(documents);
                 });
@@ -170,9 +171,27 @@ public class TestController {
         }
     }
 
-    @ApiOperation(value = "按条件查找",tags = "查找")
+    @ApiOperation(value = "按条件查找",tags = "查找嵌入式文档")
     @RequestMapping(value = "/findPool",method = RequestMethod.POST)
     public Object findPool(@RequestParam String name){
+        String collectName="test1";
+        MongoCollection<Document> mongoCollection =mongoTemplate.getCollection(collectName);
+        Bson bson= Filters.eq("data.name",name);
+//        Bson bson1=Filters.not();
+        FindIterable<Document> findIterable=mongoCollection.find(bson);
+        MongoCursor<Document> documentMongoCursor=findIterable.iterator();
+        List<Document> documents=new ArrayList<>();
+        while (documentMongoCursor.hasNext()){
+            Document document=documentMongoCursor.next();
+            documents.add(document);
+        }
+        return JSONArray.toJSON(documents);
+    }
+
+
+    @ApiOperation(value = "按条件查找",tags = "查找")
+    @RequestMapping(value = "/findObject",method = RequestMethod.POST)
+    public Object findObject(@RequestParam String name){
         String collectName="test";
         MongoCollection<Document> mongoCollection =mongoTemplate.getCollection(collectName);
         Bson bson= Filters.eq("name",name);
