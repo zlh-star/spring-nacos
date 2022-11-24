@@ -28,9 +28,8 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Api(value = "mongo测试")
 @RestController
@@ -176,32 +175,42 @@ public class TestController {
     public Object findPool(@RequestParam String name){
         String collectName="test1";
         MongoCollection<Document> mongoCollection =mongoTemplate.getCollection(collectName);
-        Bson bson= Filters.eq("data.name",name);
+        Bson bson= Filters.regex("data.name",name);
 //        Bson bson1=Filters.not();
         FindIterable<Document> findIterable=mongoCollection.find(bson);
         MongoCursor<Document> documentMongoCursor=findIterable.iterator();
-        List<Document> documents=new ArrayList<>();
+//        List<Document> documents=new ArrayList<>();
+//        List<Collection> collections=new ArrayList<>();
+        List<Object> userList=new ArrayList<>();
+        List<User> users=new ArrayList<>();
         while (documentMongoCursor.hasNext()){
             Document document=documentMongoCursor.next();
-            documents.add(document);
+//            document.values()
+          userList.addAll(new ArrayList<>(document.values()));
+           users=JSONObject.parseArray(JSON.toJSONString(userList),User.class)
+                  .stream().sorted(Comparator.comparingInt(User::getAge)).filter(user ->
+                           null!=user.getId()).collect(Collectors.toList());
+//            collections.add(document.values());
+//            documents.add(document);
         }
-        return JSONArray.toJSON(documents);
+        return  users;
     }
 
-
-    @ApiOperation(value = "按条件查找",tags = "查找")
+    @ApiOperation(value = "按条件查找",tags = "查找非嵌入式文档")
     @RequestMapping(value = "/findObject",method = RequestMethod.POST)
     public Object findObject(@RequestParam String name){
         String collectName="test";
         MongoCollection<Document> mongoCollection =mongoTemplate.getCollection(collectName);
-        Bson bson= Filters.eq("name",name);
+        Bson bson= Filters.regex("name",name);
 //        Bson bson1=Filters.not();
         FindIterable<Document> findIterable=mongoCollection.find(bson);
         MongoCursor<Document> documentMongoCursor=findIterable.iterator();
+        List<Object> userList=new ArrayList<>();
         List<Document> documents=new ArrayList<>();
         while (documentMongoCursor.hasNext()){
             Document document=documentMongoCursor.next();
             documents.add(document);
+//            userList.addAll(new ArrayList<>(document.values()));
         }
         return JSONArray.toJSON(documents);
     }
