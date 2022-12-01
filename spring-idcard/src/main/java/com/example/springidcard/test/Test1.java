@@ -3,6 +3,7 @@ package com.example.springidcard.test;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -11,10 +12,17 @@ public class Test1 {
 
     @ApiOperation(value = "测试身份证",notes = "测试身份证")
     @PostMapping("/test")
-    public void test(){
-        checkIDCard("",null);
+    public Object test(@RequestParam("idCard")String idCard){
+        try {
+            Test test1=new Test(idCard,null);
+            test1.getAddressCode();
+            return "success";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "false";
+        }
 
-        System.out.println("校验成功");
+//        System.out.println("校验成功");
     }
 
     /**
