@@ -22,6 +22,7 @@ import java.io.InputStream;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Api(value = "批量导入导出测试")
@@ -66,7 +67,7 @@ public class TestController {
 
     @ApiOperation(value = "浏览器导出",tags = "浏览器导出excel")
     @RequestMapping(value = "/export",method = RequestMethod.POST)
-    public void exportMembers1(HttpServletResponse response, String fileName, String pageNum, String pageSize ) throws IOException {
+    public void exportMembers1(HttpServletResponse response, String pageNum, String pageSize ) throws IOException {
         List<UserDto> pageList = new ArrayList<>();
         List<UserDto> members = uservice.selectList(null);
         StringBuilder stringBuilder=new StringBuilder();
@@ -91,8 +92,8 @@ public class TestController {
         // 设置字符编码
         response.setCharacterEncoding("utf-8");
         // 设置响应头
-        String fileName1 = URLEncoder.encode(fileName, "UTF-8").replaceAll("\\+", "%20");
-        response.setHeader("Content-disposition", "attachment;filename="+fileName1+".xlsx");
+//        String fileName1 = URLEncoder.encode(fileName, "UTF-8").replaceAll("\\+", "%20");
+        response.setHeader("Content-disposition", "attachment;filename="+ UUID.randomUUID().toString() +".xls");
         if("true".equals(waterswitch)){
             EasyExcel.write(response.getOutputStream(), UserDto.class)
                     .inMemory(true)
