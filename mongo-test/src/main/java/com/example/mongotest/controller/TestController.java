@@ -4,8 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.mongotest.bean.User;
-import com.example.mongotest.config.Constant;
-import com.example.mongotest.config.Results;
+import com.example.mongotest.config.Contants;
+import com.example.mongotest.config.Result;
 import com.mongodb.DB;
 import com.mongodb.DBObject;
 import com.mongodb.Mongo;
@@ -51,7 +51,7 @@ public class TestController {
     @ApiOperation(value ="mongo测试新增" ,tags = "新增")
     @RequestMapping(value = "/test",method = RequestMethod.POST)
     public Object Test(){
-        List<User> userList=new ArrayList<>(Arrays.asList(new User("3","rewqw",44)));
+        List<User> userList=new ArrayList<>(Collections.singletonList(new User("3", "rewqw", 44)));
         List<String> test=new ArrayList<>(Arrays.asList("1","2","3"));
         User user=new User();
         user.setId("8");
@@ -67,10 +67,10 @@ public class TestController {
             userList.forEach(user2 -> {
                 mongoTemplate.insert(user2);
             });
-            return "成功";
+            return Result.wrapResult("成功");
         } catch (Exception e) {
             e.printStackTrace();
-            return "失败";
+            return Result.wrapResult("失败");
         }
     }
     @ApiOperation(value = "查询",tags = "按条件查找")
@@ -93,7 +93,7 @@ public class TestController {
 //        query.limit(user.getPageSize());
 //        query.skip(user.getPageNo());
         List<User> userList= mongoTemplate.find(query,User.class);
-        return userList;
+        return Result.wrapResult(userList,total1);
     }
 
     @ApiOperation(value = "移除",tags ="删除数据")
@@ -103,10 +103,10 @@ public class TestController {
         query.addCriteria(Criteria.where("_id").is(id));
         try {
             mongoTemplate.remove(query,User.class);
-            return "删除成功";
+            return Result.wrapResult("删除成功");
         } catch (Exception e) {
             e.printStackTrace();
-            return "删除失败";
+            return Result.wrapResult("删除失败");
         }
     }
 
@@ -116,10 +116,10 @@ public class TestController {
         try {
             BulkOperations operations=mongoTemplate.bulkOps(BulkOperations.BulkMode.UNORDERED, "test");
             operations.insert(userList).execute();
-            return "成功";
+            return Result.wrapResult("成功");
         } catch (Exception e) {
             e.printStackTrace();
-            return "失败";
+            return Result.wrapResult("失败");
         }
     }
     @ApiOperation(value = "测试删除",tags = "删除")
@@ -137,12 +137,12 @@ public class TestController {
                     queryList.add(query);
                     operations.remove(queryList).execute();
                 });
-                return "成功";
+                return Result.wrapResult(Contants.SUCCESS,"成功");
             }
-            return "入参list为空";
+            return Result.wrapResult(Contants.FAIL,"入参list为空");
         } catch (Exception e) {
             e.printStackTrace();
-            return "失败";
+            return Result.wrapResult(Contants.FAIL,"失败");
         }
     }
 
@@ -161,12 +161,12 @@ public class TestController {
                     documents.add(document);
                     mongoCollection.insertMany(documents);
                 });
-                return "success";
+                return Result.wrapResult(Contants.SUCCESS,"success");
             }
-            return "入参不为空";
+            return Result.wrapResult(Contants.FAIL,"入参不为空");
         } catch (Exception e) {
             e.printStackTrace();
-            return "false";
+            return Result.wrapResult(Contants.FAIL,"false");
         }
     }
 
@@ -183,17 +183,22 @@ public class TestController {
 //        List<Collection> collections=new ArrayList<>();
         List<Object> userList=new ArrayList<>();
         List<User> users=new ArrayList<>();
-        while (documentMongoCursor.hasNext()){
-            Document document=documentMongoCursor.next();
-//            document.values()
-          userList.addAll(new ArrayList<>(document.values()));
-           users=JSONObject.parseArray(JSON.toJSONString(userList),User.class)
-                  .stream().sorted(Comparator.comparingInt(User::getAge)).filter(user ->
-                           null!=user.getId()).collect(Collectors.toList());
-//            collections.add(document.values());
-//            documents.add(document);
+        try {
+            while (documentMongoCursor.hasNext()){
+                Document document=documentMongoCursor.next();
+    //            document.values()
+              userList.addAll(new ArrayList<>(document.values()));
+               users=JSONObject.parseArray(JSON.toJSONString(userList),User.class)
+                      .stream().sorted(Comparator.comparingInt(User::getAge)).filter(user ->
+                               null!=user.getId()).collect(Collectors.toList());
+    //            collections.add(document.values());
+    //            documents.add(document);
+            }
+            return Result.wrapResult(users);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.wrapResult(Contants.FAIL,"false");
         }
-        return  users;
     }
 
     @ApiOperation(value = "按条件查找",tags = "查找非嵌入式文档")
@@ -207,11 +212,16 @@ public class TestController {
         MongoCursor<Document> documentMongoCursor=findIterable.iterator();
         List<Object> userList=new ArrayList<>();
         List<Document> documents=new ArrayList<>();
-        while (documentMongoCursor.hasNext()){
-            Document document=documentMongoCursor.next();
-            documents.add(document);
-//            userList.addAll(new ArrayList<>(document.values()));
+        try {
+            while (documentMongoCursor.hasNext()){
+                Document document=documentMongoCursor.next();
+                documents.add(document);
+    //            userList.addAll(new ArrayList<>(document.values()));
+            }
+            return Result.wrapResult(JSONArray.toJSON(documents));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.wrapResult(Contants.FAIL,"false");
         }
-        return JSONArray.toJSON(documents);
     }
 }
