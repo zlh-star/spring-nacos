@@ -1,33 +1,54 @@
 package com.example.springpictures.config;
 
-public class Response {
+import lombok.Data;
+
+@Data
+public class Response<T> {
 
     private int code;
-    private String msg;
+    private String message;
     private Object data;
+    private long total;
+    private transient T t;
 
-    public Object getData() {
-        return data;
+    public long getTotal() {
+        return total;
     }
 
-    public void setData(Object data) {
-        this.data = data;
+    public void setTotal(long total) {
+        this.total = total;
     }
 
-    public int getCode() {
-        return code;
+    public Response(){
+        super();
     }
 
-    public void setCode(int code) {
-        this.code = code;
+    public Response(Object data){
+        super();
+        this.data=data;
     }
 
-    public String getMsg() {
-        return msg;
+    public Response(String message, Object data){
+        super();
+        this.data=data;
+        this.message=message;
     }
 
-    public void setMsg(String msg) {
-        this.msg = msg;
+    public Response(int code, Object data, String message){
+        super();
+        this.data=data;
+        this.code=code;
+        this.message=message;
+    }
+    public Response(T t, int code, String message){
+        super();
+        this.t=t;
+        this.code=code;
+        this.message=message;
+    }
+    public Response(T t, int code){
+        super();
+        this.t=t;
+        this.code=code;
     }
 }
-
