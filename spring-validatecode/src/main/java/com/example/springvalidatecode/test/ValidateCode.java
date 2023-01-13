@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.Base64;
 import java.util.Random;
 
@@ -102,7 +103,7 @@ public class ValidateCode {
     }
 
     /*
-     *  生成随机图片
+     *  生成随机图片(json)
      */
     public String getRandomCodeImage(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
@@ -152,5 +153,58 @@ public class ValidateCode {
             e.printStackTrace();
         }
         return base64String;
+    }
+
+    /*
+     *  生成随机图片
+     */
+    public void getRandomCodeImages(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        HttpSession session = request.getSession();
+        // BufferedImage类是具有缓冲区的Image类,Image类是用于描述图像信息的类
+        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_BGR);
+        Graphics g = image.getGraphics();
+        g.fillRect(0, 0, width, height);
+        g.setColor(getRandomColor(105, 189));
+        g.setFont(getFont());
+
+        // 绘制干扰线
+        for (int i = 0; i < lineSize; i++) {
+            drawLine(g);
+        }
+
+        // 绘制随机字符
+        String random_string = "";
+        if(!validate){
+            for (int i = 0; i < stringNum; i++) {
+                random_string = drawString(g, random_string, i);
+            }
+        }else {
+            for (int i = 0; i < stringNum; i++) {
+                random_string = drawStringA(g, random_string, i);
+            }
+        }
+
+
+        System.out.println(random_string);
+
+        g.dispose();
+
+        session.removeAttribute(sessionKey);
+        session.setAttribute(sessionKey, random_string);
+
+//        String base64String = "";
+//        try {
+            ImageIO.write(image, "PNG", response.getOutputStream());
+//            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+//            ImageIO.write(image, "PNG", byteArrayOutputStream);
+//
+//            byte[] bytes = byteArrayOutputStream.toByteArray();
+//            Base64.Encoder encoder = Base64.getEncoder();
+//            base64String = encoder.encodeToString(bytes);
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return base64String;
     }
 }

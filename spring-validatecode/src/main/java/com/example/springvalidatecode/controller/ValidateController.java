@@ -37,7 +37,7 @@ public class ValidateController {
             ValidateCode validateCode = new ValidateCode();
 
             // 直接返回图片
-            validateCode.getRandomCodeImage(request, response);
+            validateCode.getRandomCodeImages(request, response);
 
         } catch (Exception e) {
             e.printStackTrace();
