@@ -60,10 +60,7 @@ public class UploadController {
             // 拼接图片url
             String imgHost = "http://" + getIp() + ":" + port;
             String imgUploadPath = path;
-            String imgName =
-//                    UUID.randomUUID().toString().replaceAll("-", "") + fileName.substring(fileName.lastIndexOf("."));
-                    fileName;
-            String imgPath = imgHost + imgUploadPath + imgName;
+            String imgPath = imgHost + imgUploadPath + fileName;
 
             log.info("拼接好的图片上传路径为：" + imgPath);
 
@@ -74,13 +71,19 @@ public class UploadController {
     //获取当前IP地址
     public String getIp() {
         InetAddress localhost = null;
+        String host = null;
         try {
             localhost = InetAddress.getLocalHost();
         } catch (Exception e) {
             log.error(e.getMessage());
             e.printStackTrace();
         }
-        return localhost.getHostAddress();
+        
+//        return localhost.getHostAddress();
+        if(localhost!=null){
+            host=localhost.getHostAddress();
+        }
+        return host;
     }
 //        return 0;
     }
