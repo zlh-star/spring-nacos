@@ -99,4 +99,20 @@ public class UserController {
       int count=userService.count();
       return Result.wrapResult(records,count);
     }
+
+    @ApiOperation(value = "",notes = "")
+    @RequestMapping(value = "/",method = RequestMethod.POST)
+    public Object findPageDe(@RequestParam("current") int current,@RequestParam("size") int size,
+                             @RequestBody User user){
+        QueryWrapper<User> queryWrapper=new QueryWrapper<>();
+        queryWrapper.orderByDesc("age");
+        if(user.getNickName()!=null&& !"".equals(user.getNickName())){
+            queryWrapper.eq("nickName",user.getNickName());
+        }
+        Page<User> page = new Page<>(current,size);
+        userService.page(page,queryWrapper);
+        List<User> records = page.getRecords();
+        int count=userMapper.selectCount(queryWrapper);
+        return Result.wrapResult(records,count);
+    }
 }
