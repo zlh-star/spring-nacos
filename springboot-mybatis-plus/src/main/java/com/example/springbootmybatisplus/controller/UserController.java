@@ -3,6 +3,7 @@ package com.example.springbootmybatisplus.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.example.springbootmybatisplus.config.Result;
 import com.example.springbootmybatisplus.mapper.User;
 import com.example.springbootmybatisplus.mapper.UserMapper;
 import com.example.springbootmybatisplus.service.UserService;
@@ -83,12 +84,19 @@ public class UserController {
         return userService.removeById(id);
     }
 
-//    @ApiModelProperty(value = "分页",notes = "分页插件")
-//    @ApiOperation(value = "分页",notes = "mybatisPlus分页插件")
-//    @GetMapping("/findPage")
-//    public Object findPage(User user) {
-//        Page<User> page = new Page<>(user.getBegin(),user.getEnd());
-//        Page<User> modelPage=userMapper.selectPage(page, null);
-//        return modelPage;
-//    }
+    @ApiModelProperty(value = "分页",notes = "分页插件")
+    @ApiOperation(value = "分页",notes = "mybatisPlus分页插件")
+    @GetMapping("/findPages")
+    public Object findPage(User user,int current,int size) {
+      QueryWrapper<User> queryWrapper=new QueryWrapper<>();
+      queryWrapper.orderByDesc("age");
+      if(user.getNickName()!=null&& !"".equals(user.getNickName())){
+          queryWrapper.eq("nickName",user.getNickName());
+      }
+      Page<User> page = new Page<>(current,size);
+      userService.page(page,queryWrapper);
+      List<User> records = page.getRecords();
+      int count=userService.count();
+      return Result.wrapResult(records,count);
+    }
 }

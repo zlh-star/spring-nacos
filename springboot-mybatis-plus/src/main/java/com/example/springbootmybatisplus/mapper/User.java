@@ -22,9 +22,4 @@ public class User {
     @TableField("age")
     private String age;
 
-    @TableField("begin")
-    private int begin;
-    @TableField("end")
-    private int end;
-
 }
