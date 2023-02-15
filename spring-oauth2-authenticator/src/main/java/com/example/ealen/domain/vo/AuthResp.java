@@ -1,4 +1,4 @@
-package com.github.ealen.domain.vo;
+package com.example.ealen.domain.vo;
 
 public class AuthResp {
 

@@ -1,4 +1,4 @@
-package com.github.ealen.infra.config;
+package com.example.ealen.infra.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;

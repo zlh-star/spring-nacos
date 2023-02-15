@@ -1,8 +1,11 @@
-package com.github.ealen.infra.config;
+package com.example.ealen.service.impl;
 
 
-import com.github.ealen.domain.entity.OauthAccount;
-import com.github.ealen.domain.mapper.OauthAccountMapper;
+import com.example.ealen.config.Result;
+import com.example.ealen.domain.entity.OauthAccount;
+import com.example.ealen.domain.mapper.OauthAccountMapper;
+import com.example.ealen.service.impl.OauthAccountUserDetails;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -26,7 +29,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
-
+@Slf4j
 @Service
 public class OauthAccountUserDetailsService implements UserDetailsService {
 
@@ -61,6 +64,7 @@ public class OauthAccountUserDetailsService implements UserDetailsService {
         OauthAccount account = oauthAccountMapper.loadUserByUsername(clientId, username);
         // 用户不存在
         if (account == null || !account.getAccountNonDeleted()) {
+            log.warn("account:{}",username+"用户不存在");
             throw new UsernameNotFoundException("user not found");
         }
         // 授权

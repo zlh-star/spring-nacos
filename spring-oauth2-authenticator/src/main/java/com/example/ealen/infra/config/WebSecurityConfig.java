@@ -1,7 +1,8 @@
-package com.github.ealen.infra.config;
+package com.example.ealen.infra.config;
 
+import com.example.ealen.domain.vo.AuthResp;
+import com.example.ealen.service.impl.OauthAccountUserDetailsService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.ealen.domain.vo.AuthResp;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;

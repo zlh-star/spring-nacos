@@ -1,4 +1,4 @@
-package com.example.springpictures.config;
+package com.example.ealen.config;
 
 
 import org.springframework.beans.factory.annotation.Value;
@@ -27,14 +27,14 @@ public class SwaggerConfig {
                 .apiInfo(apiInfo())
                 .select()
                 .apis(RequestHandlerSelectors.any())
-                .apis(RequestHandlerSelectors.basePackage("com.example.springpictures"))
+                .apis(RequestHandlerSelectors.basePackage("com.example.ealen"))
                 .paths(PathSelectors.any())
                 .build();
     }
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("校验")
+                .title("Oauth2")
                 .description("尚德敏学，唯实唯新")
                 .termsOfServiceUrl("https://www.baidu.com/")
                 .contact(new Contact("zlh","https://www.cnblogs.com/zlh13437/","zhaolinhai@outlook.com"))

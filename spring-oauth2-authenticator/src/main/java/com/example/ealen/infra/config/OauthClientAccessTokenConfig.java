@@ -1,6 +1,7 @@
-package com.github.ealen.infra.config;
+package com.example.ealen.infra.config;
 
-import com.github.ealen.domain.vo.AccountInfo;
+import com.example.ealen.domain.vo.AccountInfo;
+import com.example.ealen.service.impl.OauthAccountUserDetails;
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

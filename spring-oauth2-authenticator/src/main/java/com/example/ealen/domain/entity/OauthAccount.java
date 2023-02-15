@@ -1,10 +1,13 @@
-package com.github.ealen.domain.entity;
+package com.example.ealen.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -13,6 +16,8 @@ import java.util.Date;
  * 自定义认证中心账号表
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @TableName("oauth_account")
 public class OauthAccount implements Serializable {
 

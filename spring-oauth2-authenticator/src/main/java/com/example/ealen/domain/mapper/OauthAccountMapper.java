@@ -1,10 +1,11 @@
-package com.github.ealen.domain.mapper;
+package com.example.ealen.domain.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.github.ealen.domain.entity.OauthAccount;
+import com.example.ealen.domain.entity.OauthAccount;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-
+@Mapper
 public interface OauthAccountMapper extends BaseMapper<OauthAccount> {
 
     /**

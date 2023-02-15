@@ -1,8 +1,9 @@
-package com.github.ealen.infra.config;
+package com.example.ealen.service.impl;
 
-import com.github.ealen.domain.entity.OauthAccount;
+import com.example.ealen.domain.entity.OauthAccount;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 
