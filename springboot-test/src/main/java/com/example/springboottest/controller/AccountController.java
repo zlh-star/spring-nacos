@@ -1,9 +1,5 @@
 package com.example.springboottest.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.segments.MergeSegments;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.springboottest.dao.StudentDao;
@@ -21,12 +17,9 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 @Api(value = "用户演示类")
@@ -65,7 +58,7 @@ public class AccountController {
     @ApiModelProperty(value = "查询账号",notes = "根据账号id查询账号信息")
     @ApiOperation(value = "查询账号",notes = "根据账号id查询账号信息")
     @GetMapping("/selectAccount")
-    public List<UserModel> selesctAccount(@RequestParam("accountId") String accountId){
+    public Object selesctAccount(@RequestParam("accountId") String accountId){
         if(StringUtils.isEmpty(accountId)){
             return Collections.EMPTY_LIST;
         }
@@ -84,25 +77,19 @@ public class AccountController {
         userModel1.setPassword(userModel.getPassword());
         userModel1.setCreateData(new Date());
         userModelList.add(userModel1);
-        if(userModelList==null&&userModelList.size()==0){
-            return 0;
-        }
-        else{
-            List<UserModel> userAllAccountlist=userDao.getAllAccount();
-            if(userAllAccountlist!=null && userAllAccountlist.size()>0){
+        List<UserModel> userAllAccountlist=userDao.getAllAccount();
+        if(userAllAccountlist!=null && userAllAccountlist.size()>0) {
                 //去重操作
-                List<UserModel> notexitlist=userModelList.stream().filter(name->
-                        (!userAllAccountlist.contains(name))).collect(Collectors.toList());
-                if(notexitlist==null||notexitlist.size()==0){
+            List<UserModel> notexitlist = userModelList.stream().filter(name ->
+                    (!userAllAccountlist.contains(name))).collect(Collectors.toList());
+            if (notexitlist.size() == 0) {
+                return 0;
+            } else {
+                int userModelList1 = userDao.insertAccount(notexitlist);
+                if (StringUtils.isEmpty(userModelList1)) {
                     return 0;
-                }else {
-                    int userModelList1=userDao.insertAccount(notexitlist);
-                    if(StringUtils.isEmpty(userModelList1)){
-                        return 0;
-                    }
-                    return userModelList1;
                 }
-
+                return userModelList1;
             }
         }
         return 0;
@@ -186,8 +173,7 @@ public class AccountController {
             if(toIndex>count){
                 toIndex=count;
             }
-            List<UserModel> pageList=userModels.subList(pageIndex,toIndex);
-            return pageList;
+            return userModels.subList(pageIndex,toIndex);
         }
         return userModels;
     }
@@ -197,13 +183,13 @@ public class AccountController {
     @DeleteMapping("/deleteAccount")
     public int deleteAccount(@RequestParam("accountId") String accountId){
         try {
-            List<String> list=new ArrayList<>(Arrays.asList(accountId));
+            List<String> list=new ArrayList<>(Collections.singletonList(accountId));
             List<UserModel> list1=new ArrayList<>();
-            if(list!=null&&list.size()>0){
+            if(list.size() > 0){
                 list.forEach(id->{
                     List<UserModel> userModelList=userDao.selectAccount(id);
                     list1.addAll(userModelList);
-                    if(list1!=null&&list1.size()>0){
+                    if(list1.size() > 0){
                         int userModels=userDao.deleteAccount(accountId,list1);
 //                        return userModels;
                     }
@@ -247,45 +233,5 @@ public class AccountController {
         page.setRecords(pageList);
         page.setTotal(list.size());
         return page;
-    }
-
-    private Map<String, Object> request2Map(UserCondition userCondition) {
-        Map<String, Object> map = filterToMap(userCondition);
-        int page = Integer.parseInt(userCondition.getPageIndex());
-        map.put("pageIndex", page);
-        if (StringUtils.hasText(userCondition.getPageSize())) {
-            int rows = Integer.parseInt(userCondition.getPageSize());
-//            map.put("pageBegin", (page - 1) * rows + 1);
-            map.put("pageEnd", page * rows);
-            map.put("begin", (page +1) * rows);
-//            map.put("end", rows);
-//            map.put("pageSize",rows);
-        }
-        return map;
-    }
-
-
-    protected Map<String, Object> filterToMap(UserCondition params) {
-        Map<String, Object> map = new HashMap<String, Object>();
-        // 可能发生异常的地方全部捕捉，如果有异常发生，则返回空的map
-        try {
-            String filters =params.getFilter();
-            String[] firstArray = filters.split("&");
-            for (String keyValue : firstArray) {
-
-                try {
-                    keyValue = URLDecoder.decode(keyValue, "UTF-8");
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
-                if (!StringUtils.isEmpty(keyValue)) {
-                    map.put(keyValue.substring(0, keyValue.indexOf("=")),
-                            keyValue.substring(keyValue.indexOf("=") + 1));
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return map;
     }
 }
