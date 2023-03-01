@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.menutest.dao.MenuDao">
+    <resultMap id="MenuBo" type="com.example.menutest.bo.MenuBo">
+        <result property="menuId" column="menu_id" />
+        <result property="menuParentId" column="menu_parentid" />
+        <result property="menuIndex" column="menu_index" />
+        <result property="menuTitle" column="menu_title" />
+        <result property="menuPath" column="menu_path" />
+        <result property="menuIcon" column="menu_icon" />
+        <result property="menuKind" column="menu_kind" />
+        <result property="menuObjPath" column="menu_obj_path" />
+        <result property="menuAppName" column="menu_app_name" />
+        <result property="menuState" column="menu_state" />
+        <result property="actionAuthorized" column="action_authorized" />
+        <result property="actionNormal" column="action_normal" />
+        <result property="actionSystemic" column="action_systemic" />
+        <result property="actionSafe" column="action_safe" />
+        <result property="actionAudit" column="action_audit" />
+        <result property="actionType" column="actionType" />
+    </resultMap>
+
+    <resultMap id="roleMenuBo" type="com.example.menutest.bo.roleMenuBo">
+        <result property="roleId" column="ROLE_ID" />
+        <result property="menuId" column="MENU_ID" />
+        <result property="menuTitle" column="menu_title" />
+        <result property="menuPath" column="menu_path" />
+        <result property="menuObjPath" column="menu_obj_path" />
+        <result property="tenantId" column="TENANT_ID" />
+    </resultMap>
+
+
+    <select id="getAllMenuTitle" resultMap="MenuBo">
+        select *
+        from lc_menu
+    </select>
+
+    <select id="roleMenuList" resultMap="roleMenuBo">
+        select
+        a.MENU_TITLE,
+        a.MENU_ID,
+        a.MENU_PATH,
+        a.MENU_OBJ_PATH,
+        b.ROLE_ID
+        from lc_menu a
+        left join lc_role_menu_rela b on a.MENU_ID=b.MENU_ID
+				WHERE a.MENU_TITLE like CONCAT(CONCAT('%', #{menuTitle}),'%')
+    </select>
+
+    <select id="getNextChildMenu" resultMap="MenuBo" parameterType="String">
+        select t.*,(SELECT COUNT(1) FROM lc_menu a WHERE
+        a.menu_parentid
+        = t.menu_id AND a.menu_state=1)
+        from lc_menu t
+        <where>
+            <if test="menuId!=null and menuId!=''">
+                AND t.menu_parentid=#{menuId} AND t.MENU_STATE='1'
+            </if>
+            <if test="menuId==null">
+                AND (t.menu_parentid is null or t.MENU_PARENTID='') AND
+                t.MENU_STATE='1'
+            </if>
+        </where>
+        order by menu_index asc
+    </select>
+
+    <select id="menuList" resultMap="MenuBo" parameterType="com.example.menutest.bo.MenuBo">
+        select * from lc_menu
+        <where>
+            <if test="menuTitle!=null and menuTitle!=''">
+                AND menu_title like
+                CONCAT(CONCAT('%',#{menuTitle}),'%')
+            </if>
+        </where>
+        limit #{pageNo},#{pageSize}
+    </select>
+
+</mapper>
