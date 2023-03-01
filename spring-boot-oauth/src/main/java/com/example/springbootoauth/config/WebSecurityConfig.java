@@ -31,9 +31,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         //默认的登录用户名，密码，实际项目实现UserDetailsService后，从数据库获取
+        String password=new BCryptPasswordEncoder().encode("admin");
+        System.out.println(password);
         auth.inMemoryAuthentication().withUser("admin")
-                .password(new BCryptPasswordEncoder().encode("admin")).roles("USER");
-//        System.out.println(auth);
+                .password(password).roles("USER");
+        System.out.println(auth);
     }
 
     /** 授权服务配置需要用到这个 bean  */
