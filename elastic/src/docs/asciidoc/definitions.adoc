@@ -1,0 +1,36 @@
+
+[[_definitions]]
+== 定义
+
+[[_93f95fed501eb22879293ab854e5c589]]
+=== 实体类
+
+[options="header", cols=".^3,.^11,.^4"]
+|===
+|名称|说明|架构
+|**date** +
+__可选__|date +
+**例子** : `"string"`|string (date-time)
+|**id** +
+__可选__|id +
+**例子** : `"string"`|string
+|**loginTime** +
+__可选__|登录时间 +
+**例子** : `"yyyy-MM-dd HH:mm:ss"`|string
+|**logoffTime** +
+__可选__|登出时间 +
+**例子** : `"yyyy-MM-dd HH:mm:ss"`|string
+|**name** +
+__可选__|name +
+**例子** : `"string"`|string
+|**name1** +
+__可选__|name1 +
+**例子** : `"string"`|string
+|**pageNo** +
+__可选__|**例子** : `0`|integer (int32)
+|**pageSize** +
+__可选__|**例子** : `0`|integer (int32)
+|===
+
+
+

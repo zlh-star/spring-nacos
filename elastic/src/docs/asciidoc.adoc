@@ -1,0 +1,751 @@
+= Swagger2,演示接口
+
+
+[[_overview]]
+== 概观
+尚德敏学，唯实唯新
+
+
+=== 版本信息
+[%hardbreaks]
+__版本__ : 1.1
+
+
+=== 联系方式
+[%hardbreaks]
+__名字__ : zlh
+__邮箱__ : zhaolinhai@outlook.com
+
+
+=== 许可信息
+[%hardbreaks]
+__服务条款__ : http://localhost:8090/v2/api-docs
+
+
+=== URI scheme
+[%hardbreaks]
+__域名__ : localhost:8090
+__基础路径__ : /
+
+
+=== 标签
+
+* audit-controller : Audit Controller
+* test-controller : Test Controller
+
+
+
+
+[[_paths]]
+== 资源
+
+[[_audit-controller_resource]]
+=== Audit-controller
+Audit Controller
+
+
+[[_deletelistlogusingpost]]
+==== deleteListLog
+....
+POST /deleteListLog
+....
+
+
+===== 参数
+
+[options="header", cols=".^2,.^3,.^9,.^4"]
+|===
+|类型|名称|说明|架构
+|**Query**|**Idlist** +
+__可选__|Idlist|< string > array(multi)
+|===
+
+
+===== 响应
+
+[options="header", cols=".^2,.^14,.^4"]
+|===
+|HTTP代码|说明|架构
+|**200**|OK|object
+|**201**|Created|无内容
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+===== 消耗
+
+* `application/json`
+
+
+===== 生成
+
+* `*/*`
+
+
+===== HTTP请求示例
+
+====== 请求 path
+----
+/deleteListLog
+----
+
+
+====== 请求 query
+[source,json]
+----
+{
+  "Idlist" : "string"
+}
+----
+
+
+===== HTTP响应示例
+
+====== 响应 200
+[source,json]
+----
+"object"
+----
+
+
+[[_deletelogusingpost]]
+==== deleteLog
+....
+POST /deleteLog
+....
+
+
+===== 参数
+
+[options="header", cols=".^2,.^3,.^9,.^4"]
+|===
+|类型|名称|说明|架构
+|**Query**|**Idlist** +
+__可选__|Idlist|< string > array(multi)
+|===
+
+
+===== 响应
+
+[options="header", cols=".^2,.^14,.^4"]
+|===
+|HTTP代码|说明|架构
+|**200**|OK|object
+|**201**|Created|无内容
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+===== 消耗
+
+* `application/json`
+
+
+===== 生成
+
+* `*/*`
+
+
+===== HTTP请求示例
+
+====== 请求 path
+----
+/deleteLog
+----
+
+
+====== 请求 query
+[source,json]
+----
+{
+  "Idlist" : "string"
+}
+----
+
+
+===== HTTP响应示例
+
+====== 响应 200
+[source,json]
+----
+"object"
+----
+
+
+[[_deleteonelogusingpost]]
+==== deleteOneLog
+....
+POST /deleteOneLog
+....
+
+
+===== 参数
+
+[options="header", cols=".^2,.^3,.^9,.^4"]
+|===
+|类型|名称|说明|架构
+|**Query**|**id** +
+__必填__|id|string
+|===
+
+
+===== 响应
+
+[options="header", cols=".^2,.^14,.^4"]
+|===
+|HTTP代码|说明|架构
+|**200**|OK|无内容
+|**201**|Created|无内容
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+===== 消耗
+
+* `application/json`
+
+
+===== 生成
+
+* `*/*`
+
+
+===== HTTP请求示例
+
+====== 请求 path
+----
+/deleteOneLog
+----
+
+
+====== 请求 query
+[source,json]
+----
+{
+  "id" : "string"
+}
+----
+
+
+[[_insertusingpost]]
+==== insert
+....
+POST /insert
+....
+
+
+===== 响应
+
+[options="header", cols=".^2,.^14,.^4"]
+|===
+|HTTP代码|说明|架构
+|**200**|OK|无内容
+|**201**|Created|无内容
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+===== 消耗
+
+* `application/json`
+
+
+===== 生成
+
+* `*/*`
+
+
+===== HTTP请求示例
+
+====== 请求 path
+----
+/insert
+----
+
+
+[[_lianbiaousingpost]]
+==== 合并链表
+....
+POST /lianbiao
+....
+
+
+===== 说明
+合并链表
+
+
+===== 响应
+
+[options="header", cols=".^2,.^14,.^4"]
+|===
+|HTTP代码|说明|架构
+|**200**|OK|object
+|**201**|Created|无内容
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+===== 消耗
+
+* `application/json`
+
+
+===== 生成
+
+* `*/*`
+
+
+===== HTTP请求示例
+
+====== 请求 path
+----
+/lianbiao
+----
+
+
+===== HTTP响应示例
+
+====== 响应 200
+[source,json]
+----
+"object"
+----
+
+
+[[_suanfausingpost]]
+==== 两数之和
+....
+POST /suanfa
+....
+
+
+===== 说明
+两数之和
+
+
+===== 响应
+
+[options="header", cols=".^2,.^14,.^4"]
+|===
+|HTTP代码|说明|架构
+|**200**|OK|< integer (int32) > array
+|**201**|Created|无内容
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+===== 消耗
+
+* `application/json`
+
+
+===== 生成
+
+* `*/*`
+
+
+===== HTTP请求示例
+
+====== 请求 path
+----
+/suanfa
+----
+
+
+===== HTTP响应示例
+
+====== 响应 200
+[source,json]
+----
+[ 0 ]
+----
+
+
+[[_test-controller_resource]]
+=== Test-controller
+Test Controller
+
+
+[[_deleteusingpost]]
+==== delete
+....
+POST /delete
+....
+
+
+===== 参数
+
+[options="header", cols=".^2,.^3,.^9,.^4"]
+|===
+|类型|名称|说明|架构
+|**Body**|**demoDto** +
+__必填__|demoDto|<<_93f95fed501eb22879293ab854e5c589,实体类>>
+|===
+
+
+===== 响应
+
+[options="header", cols=".^2,.^14,.^4"]
+|===
+|HTTP代码|说明|架构
+|**200**|OK|object
+|**201**|Created|无内容
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+===== 消耗
+
+* `application/json`
+
+
+===== 生成
+
+* `*/*`
+
+
+===== HTTP请求示例
+
+====== 请求 path
+----
+/delete
+----
+
+
+====== 请求 body
+[source,json]
+----
+{
+  "date" : "string",
+  "id" : "string",
+  "loginTime" : "yyyy-MM-dd HH:mm:ss",
+  "logoffTime" : "yyyy-MM-dd HH:mm:ss",
+  "name" : "string",
+  "name1" : "string",
+  "pageNo" : 0,
+  "pageSize" : 0
+}
+----
+
+
+===== HTTP响应示例
+
+====== 响应 200
+[source,json]
+----
+"object"
+----
+
+
+[[_deletelistusingpost]]
+==== deleteList
+....
+POST /deleteList
+....
+
+
+===== 参数
+
+[options="header", cols=".^2,.^3,.^9,.^4"]
+|===
+|类型|名称|说明|架构
+|**Query**|**ids** +
+__可选__|ids|< string > array(multi)
+|===
+
+
+===== 响应
+
+[options="header", cols=".^2,.^14,.^4"]
+|===
+|HTTP代码|说明|架构
+|**200**|OK|object
+|**201**|Created|无内容
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+===== 消耗
+
+* `application/json`
+
+
+===== 生成
+
+* `*/*`
+
+
+===== HTTP请求示例
+
+====== 请求 path
+----
+/deleteList
+----
+
+
+====== 请求 query
+[source,json]
+----
+{
+  "ids" : "string"
+}
+----
+
+
+===== HTTP响应示例
+
+====== 响应 200
+[source,json]
+----
+"object"
+----
+
+
+[[_selecalltauditusingpost]]
+==== selecAlltAudit
+....
+POST /selecAlltAudit
+....
+
+
+===== 参数
+
+[options="header", cols=".^2,.^3,.^9,.^4"]
+|===
+|类型|名称|说明|架构
+|**Body**|**demoDto** +
+__必填__|demoDto|<<_93f95fed501eb22879293ab854e5c589,实体类>>
+|===
+
+
+===== 响应
+
+[options="header", cols=".^2,.^14,.^4"]
+|===
+|HTTP代码|说明|架构
+|**200**|OK|object
+|**201**|Created|无内容
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+===== 消耗
+
+* `application/json`
+
+
+===== 生成
+
+* `*/*`
+
+
+===== HTTP请求示例
+
+====== 请求 path
+----
+/selecAlltAudit
+----
+
+
+====== 请求 body
+[source,json]
+----
+{
+  "date" : "string",
+  "id" : "string",
+  "loginTime" : "yyyy-MM-dd HH:mm:ss",
+  "logoffTime" : "yyyy-MM-dd HH:mm:ss",
+  "name" : "string",
+  "name1" : "string",
+  "pageNo" : 0,
+  "pageSize" : 0
+}
+----
+
+
+===== HTTP响应示例
+
+====== 响应 200
+[source,json]
+----
+"object"
+----
+
+
+[[_selectallauditusingpost]]
+==== selectAllAudit
+....
+POST /selectAllAudit
+....
+
+
+===== 响应
+
+[options="header", cols=".^2,.^14,.^4"]
+|===
+|HTTP代码|说明|架构
+|**200**|OK|object
+|**201**|Created|无内容
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+===== 消耗
+
+* `application/json`
+
+
+===== 生成
+
+* `*/*`
+
+
+===== HTTP请求示例
+
+====== 请求 path
+----
+/selectAllAudit
+----
+
+
+===== HTTP响应示例
+
+====== 响应 200
+[source,json]
+----
+"object"
+----
+
+
+[[_selectauditusingpost]]
+==== selectAudit
+....
+POST /selectAudit
+....
+
+
+===== 参数
+
+[options="header", cols=".^2,.^3,.^9,.^4"]
+|===
+|类型|名称|说明|架构
+|**Body**|**demoDto** +
+__必填__|demoDto|<<_93f95fed501eb22879293ab854e5c589,实体类>>
+|===
+
+
+===== 响应
+
+[options="header", cols=".^2,.^14,.^4"]
+|===
+|HTTP代码|说明|架构
+|**200**|OK|object
+|**201**|Created|无内容
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+===== 消耗
+
+* `application/json`
+
+
+===== 生成
+
+* `*/*`
+
+
+===== HTTP请求示例
+
+====== 请求 path
+----
+/selectAudit
+----
+
+
+====== 请求 body
+[source,json]
+----
+{
+  "date" : "string",
+  "id" : "string",
+  "loginTime" : "yyyy-MM-dd HH:mm:ss",
+  "logoffTime" : "yyyy-MM-dd HH:mm:ss",
+  "name" : "string",
+  "name1" : "string",
+  "pageNo" : 0,
+  "pageSize" : 0
+}
+----
+
+
+===== HTTP响应示例
+
+====== 响应 200
+[source,json]
+----
+"object"
+----
+
+
+
+
+[[_definitions]]
+== 定义
+
+[[_93f95fed501eb22879293ab854e5c589]]
+=== 实体类
+
+[options="header", cols=".^3,.^11,.^4"]
+|===
+|名称|说明|架构
+|**date** +
+__可选__|date +
+**例子** : `"string"`|string (date-time)
+|**id** +
+__可选__|id +
+**例子** : `"string"`|string
+|**loginTime** +
+__可选__|登录时间 +
+**例子** : `"yyyy-MM-dd HH:mm:ss"`|string
+|**logoffTime** +
+__可选__|登出时间 +
+**例子** : `"yyyy-MM-dd HH:mm:ss"`|string
+|**name** +
+__可选__|name +
+**例子** : `"string"`|string
+|**name1** +
+__可选__|name1 +
+**例子** : `"string"`|string
+|**pageNo** +
+__可选__|**例子** : `0`|integer (int32)
+|**pageSize** +
+__可选__|**例子** : `0`|integer (int32)
+|===
+
+
+
+
+

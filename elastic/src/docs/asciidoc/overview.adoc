@@ -1,0 +1,37 @@
+= Swagger2,演示接口
+
+
+[[_overview]]
+== 概观
+尚德敏学，唯实唯新
+
+
+=== 版本信息
+[%hardbreaks]
+__版本__ : 1.1
+
+
+=== 联系方式
+[%hardbreaks]
+__名字__ : zlh
+__邮箱__ : zhaolinhai@outlook.com
+
+
+=== 许可信息
+[%hardbreaks]
+__服务条款__ : http://localhost:8090/v2/api-docs
+
+
+=== URI scheme
+[%hardbreaks]
+__域名__ : localhost:8090
+__基础路径__ : /
+
+
+=== 标签
+
+* audit-controller : Audit Controller
+* test-controller : Test Controller
+
+
+
