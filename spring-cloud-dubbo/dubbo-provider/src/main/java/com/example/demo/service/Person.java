@@ -1,4 +1,4 @@
-package com.example.dubboapi.service;
+package com.example.demo.service;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
