@@ -154,17 +154,17 @@ public class TestCache {
         cacheManagerImpl.putCache("myTest","linhai",10L);
         System.out.println(cacheManagerImpl.getCacheByKey("test").getDatas());
         System.out.println(cacheManagerImpl.getCacheByKey("myTest").getDatas());
-        CacheListener cacheListener = new CacheListener(cacheManagerImpl);
-        cacheListener.startListen();
         logger.info("test:" + cacheManagerImpl.getCacheByKey("test").getDatas());
         logger.info("myTest:" + cacheManagerImpl.getCacheByKey("myTest").getDatas());
+        CacheListener cacheListener = new CacheListener(cacheManagerImpl);
+        cacheListener.startListen();
         try {
             TimeUnit.SECONDS.sleep(5);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        logger.info("test:" + cacheManagerImpl.getCacheByKey("test"));
-        logger.info("myTest:" + cacheManagerImpl.getCacheByKey("myTest"));
+//        logger.info("test:" + cacheManagerImpl.getCacheByKey("test"));
+//        logger.info("myTest:" + cacheManagerImpl.getCacheByKey("myTest"));
     }
 
     /**
