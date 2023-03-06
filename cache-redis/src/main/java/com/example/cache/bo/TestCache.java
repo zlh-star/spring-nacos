@@ -148,23 +148,23 @@ public class TestCache {
         Boolean result=redisCacheTemplate.delete("123");
         System.out.println("str:"+str);
         System.out.println("result:"+result);
-//        System.out.println(str);
-//        CacheManagerImpl cacheManagerImpl = new CacheManagerImpl();
-//        cacheManagerImpl.putCache("test","zhao",10L);
-//        cacheManagerImpl.putCache("myTest","linhai",10L);
-//        System.out.println(cacheManagerImpl.getCacheByKey("test").getDatas());
-//        System.out.println(cacheManagerImpl.getCacheByKey("myTest").getDatas());
-//        CacheListener cacheListener = new CacheListener(cacheManagerImpl);
-//        cacheListener.startListen();
-//        logger.info("test:" + cacheManagerImpl.getCacheByKey("test").getDatas());
-//        logger.info("myTest:" + cacheManagerImpl.getCacheByKey("myTest").getDatas());
-//        try {
-//            TimeUnit.SECONDS.sleep(5);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//        logger.info("test:" + cacheManagerImpl.getCacheByKey("test"));
-//        logger.info("myTest:" + cacheManagerImpl.getCacheByKey("myTest"));
+        System.out.println(str);
+        CacheManagerImpl cacheManagerImpl = new CacheManagerImpl();
+        cacheManagerImpl.putCache("test","zhao",10L);
+        cacheManagerImpl.putCache("myTest","linhai",10L);
+        System.out.println(cacheManagerImpl.getCacheByKey("test").getDatas());
+        System.out.println(cacheManagerImpl.getCacheByKey("myTest").getDatas());
+        CacheListener cacheListener = new CacheListener(cacheManagerImpl);
+        cacheListener.startListen();
+        logger.info("test:" + cacheManagerImpl.getCacheByKey("test").getDatas());
+        logger.info("myTest:" + cacheManagerImpl.getCacheByKey("myTest").getDatas());
+        try {
+            TimeUnit.SECONDS.sleep(5);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        logger.info("test:" + cacheManagerImpl.getCacheByKey("test"));
+        logger.info("myTest:" + cacheManagerImpl.getCacheByKey("myTest"));
     }
 
     /**
