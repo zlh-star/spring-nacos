@@ -17,10 +17,27 @@ public class SimpleSend {
     @Autowired
     private AmqpTemplate amqpTemplate;
 
-    public void send() {
+    public Object send() {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String message = "Hello Spring Boot " + simpleDateFormat.format(new Date());
         amqpTemplate.convertAndSend("simple", message);
         logger.info("消息推送成功！");
+        return message;
+    }
+
+    public Object send(int i) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String message = "Hello Spring Boot " +i+ simpleDateFormat.format(new Date());
+        amqpTemplate.convertAndSend("simpleOneToMany", message);
+        logger.info("消息推送成功！");
+        return message;
+    }
+
+    public Object send1(int i) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String message = "Hello Spring Boot " +i+ simpleDateFormat.format(new Date());
+        amqpTemplate.convertAndSend("simpleOneToMany", message);
+        logger.info("推送成功！");
+        return message;
     }
 }

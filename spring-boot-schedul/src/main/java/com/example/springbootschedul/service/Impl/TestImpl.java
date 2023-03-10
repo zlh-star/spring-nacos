@@ -18,7 +18,7 @@ public class TestImpl {
     /**
      * cron表达式
      */
-    @Scheduled(cron = "*/5 * * * * ?")
+    @Scheduled(cron = "0 */1 * * * ?")
     private void task1() {
         logger.info("task1 正在执行，现在时间：{}", dateFormat.format(new Date()));
     }

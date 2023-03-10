@@ -21,6 +21,6 @@ public class User implements Serializable {
     @ApiModelProperty(example = "用户名",notes ="用户name" )
     private String name;
     @ApiModelProperty(example = "用户年龄",notes = "用户age")
-    private int age;
+    private String age;
 
 }

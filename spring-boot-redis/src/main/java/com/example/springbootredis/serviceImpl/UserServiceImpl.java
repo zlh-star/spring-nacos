@@ -31,21 +31,21 @@ public class UserServiceImpl implements UserService {
     @Override
     public User save(User user) {
         userMap.put(user.getId(),user);
-        log.info("存储对象",user);
+        log.info("存储对象:{}",user);
         return user;
     }
 
     @Cacheable(value = "user",keyGenerator= "idGenerator")
     @Override
     public User getUser(Long id) {
-        log.info("获取当前对象",userMap.get(id));
+        log.info("获取当前对象:{}",userMap.get(id));
         return userMap.get(id);
     }
 
     @CacheEvict(value = "user",keyGenerator= "idGenerator")
     @Override
     public void delete(User user) {
-        userMap.remove(user);
+        userMap.remove(user.getId());
         log.info("进入删除，删除成功");
     }
 }

@@ -26,8 +26,7 @@ public class UserController {
     UserService userService;
     @Autowired
     RedisTemplate<String, Serializable> redisCacheTemplate;
-//    @Autowired
-//    UserService userService;
+
     @GetMapping("/test")
     @ApiOperation(value = "获取对象",notes = "获取当前对象",tags = "根据redis缓存获取当前的对象")
     public void test() {
@@ -35,27 +34,28 @@ public class UserController {
 
         log.info("当前获取对象：{}",stringRedisTemplate.opsForValue().get("baidu"));
 
-        redisCacheTemplate.opsForValue().set("baidu.com", new User(1L, "baidu", 18));
+        redisCacheTemplate.opsForValue().set("baidu.com", new User(1L, "baidu", "18"));
 
         User user = (User) redisCacheTemplate.opsForValue().get("baidu.com");
 
         log.info("当前获取对象：{}", user);
     }
+
+
     @GetMapping("/test1")
     @ApiOperation(value ="保存用户" ,notes ="根据当前用户的所有信息进行保存",tags = "进行用户保存")
     public User test1(User user){
         return userService.save(user);
     }
 
-
     @GetMapping("/getUrl")
     @ApiOperation(value ="获取sessionId",notes = "根据url进行获取",tags = "获取的SessionId为相关csdn")
     public String getSession(HttpServletRequest request){
-        String url=(String)request.getSession().getAttribute("url");
+        String url=(String)request.getSession().getAttribute("");
         if(StringUtils.isEmpty(url)){
-            request.getSession().setAttribute("url","https://blog.csdn.net");
+            request.getSession().setAttribute("url","https://baidu.com");
         }
-        log.info("获得的sessionId的内容为",request.getSession().getAttribute("url"));
+        log.info("获得的sessionId的内容为:{}",request.getSession().getAttribute("url"));
         return request.getRequestedSessionId();
     }
 

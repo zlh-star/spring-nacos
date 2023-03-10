@@ -1,11 +1,17 @@
 package com.example.springbootwebfluxmongodb.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.example.springbootwebfluxmongodb.mapper.User;
 import com.example.springbootwebfluxmongodb.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,11 +19,17 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.awt.print.Pageable;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.function.Function;
 
 @Controller
 @RequestMapping("/user")
 @Api(value = "用户测试")
+@Slf4j
 public class UserController {
     @Autowired
     private UserService userService;
@@ -100,10 +112,48 @@ public class UserController {
     @GetMapping(value="/allUser", produces = MediaType.APPLICATION_STREAM_JSON_VALUE)
     @ResponseBody
     @ApiOperation(value = "查找所有用户",nickname = "每条数据之间间隔两秒")
-    public Flux<User> findAll() {
+    public Mono<User> findAll() {
         //每条数据之间延迟2秒
-        return userService.findAll().delayElements(Duration.ofSeconds(2));
+//        List<Flux<User>> userList=new ArrayList<>();
+//        JSONArray jsonArray=new JSONArray();
+//        Sort sort=Sort.by(Sort.Direction.DESC,"age");
+//        Pageable pageable= (Pageable) PageRequest.of(1,2,sort);
+//       JSON.toJSONString(userService.findAll().delayElements(Duration.ofSeconds(2)));
+//        List<Mono<List<User>>> userList=null;
+        List<User> userList=new ArrayList<>();
+        Mono<List<User>> listMono=userService.findAll().map(x -> {
+            User user1=new User();
+            BeanUtils.copyProperties(x,user1);
+
+            return user1;
+        }).collectList();
+//        log.info("所有用户为：{}",userList);
+        User user=new User();
+       Mono<User> userMono= listMono.map(a->{
+            BeanUtils.copyProperties(a,user);
+            userList.add(user);
+            return user;
+        });
+        return userMono;
+//        return userList;
+//       Mono<List<User>>listMono=
+//             userService.findAll().flatMapIterable(user -> {
+//                   userList.add(user);
+//                   return userList;
+//               }).map(x->x).collectList();
+//        return userList;
+//        JSONArray jsonArray=new JSONArray();
+//        jsonArray.add(listMono);
+//       return listMono;
+//        System.out.println(userService.findAll().delayElements(Duration.ofSeconds(2)));
+//        userList.add(userService.findAll().delayElements(Duration.ofSeconds(2)));
+//        jsonArray.addAll(userList);
+//        List<User> users=JSONObject.parseArray(jsonArray.toString(),User.class);
+
+//        List<User> userList= JSONObject.parseArray(JSON.toJSONString(userService.findAll().delayElements(Duration.ofSeconds(2))),User.class);
+//        return users;
     }
+
 
     /**
      * 第二种方式，返回list<User>集合
@@ -114,12 +164,15 @@ public class UserController {
     @ResponseBody
     @ApiOperation(value = "查找所有用户")
     public Flux<User> list(){
+
         Flux<User> flux = userService.findAll().map(x->{
             User user = new User();
             BeanUtils.copyProperties(x,user);
             return user;
         });
-        return flux;
+//        List<Flux<User>>fluxes=new LinkedList<>();
+//        fluxes.add(flux);
+      return flux;
     }
 
 }

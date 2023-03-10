@@ -21,8 +21,6 @@ import java.util.Map;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserInfo {
 
-
-
     private static final long serialVersionUID = 1L;
     //解决mybatis-plus和easyExcel的冲突问题
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -45,6 +43,6 @@ public class UserInfo {
      */
     public String getSexStr() {
 
-        return RedisDicUtil.transForm("sex",this.sex);
+        return RedisDicUtil.transForm("男",1);
     }
 }

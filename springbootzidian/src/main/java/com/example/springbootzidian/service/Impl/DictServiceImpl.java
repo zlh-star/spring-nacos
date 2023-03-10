@@ -9,6 +9,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
 import java.util.logging.Logger;
 
 @Service
@@ -22,7 +23,7 @@ public class DictServiceImpl implements DictService {
 
     @Override
     public String transForm(String name, int value) {
-        String tmp=redisTemplate.opsForValue().get(name+"_"+value).toString();
+        String tmp= Objects.requireNonNull(redisTemplate.opsForValue().get(name + "_" + value)).toString();
         if(StringUtils.isNotBlank(tmp)){
             return tmp;
         }
