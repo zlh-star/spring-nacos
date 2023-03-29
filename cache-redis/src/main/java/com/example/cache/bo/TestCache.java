@@ -5,24 +5,34 @@ import com.alibaba.fastjson2.JSON;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.connection.jedis.JedisUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.web.bind.annotation.*;
+import redis.clients.jedis.Jedis;
 
 import java.io.Serializable;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Logger;
 
 @Api(value = "测试")
 @RestController
 @Slf4j
 public class TestCache {
+
+    @Autowired
+    private RedissonClient redissonClient;
 
     @Autowired
     StringRedisTemplate stringRedisTemplate;
@@ -36,8 +46,88 @@ public class TestCache {
     @Autowired
     RedisTemplate<String, Serializable> redisCacheTemplate;
 
+    @Value("${spring.redis.port}")
+     private String serverPort;
+
 
     Logger logger = Logger.getLogger("cacheLog");
+
+    private final Lock lock = new ReentrantLock();
+
+    String goodsKey = "zhaolinhai";
+
+    private static final String REDIS_LOCK = "redis_lock";
+
+    @ApiOperation(value = "redisson分布式1",tags = "RedLock分布式锁1")
+    @RequestMapping(value = "/redisLocks",method = RequestMethod.POST)
+    public Object redisLocks() throws InterruptedException {
+        String redisKey = UUID.randomUUID().toString() + Thread.currentThread().getName();
+        RLock redisLock=redissonClient.getLock(REDIS_LOCK);
+        redisLock.lock();
+        try {
+            // 获取库存数量
+            String goods = stringRedisTemplate.opsForValue().get(goodsKey);
+            int goodsNum = goods == null ? 0: Integer.parseInt(goods);
+            if (goodsNum > 0){
+                int realNum = goodsNum - 1;
+                stringRedisTemplate.opsForValue().set(goodsKey,String.valueOf(realNum));
+                System.out.println("成功买到商品，库存剩余：" + realNum + "件" + "\t 服务端口为：" + serverPort);
+
+                return "成功买到商品，库存剩余：" + realNum + "件" + "\t 服务端口为：" + serverPort;
+            }else {
+                System.out.println("商品已售罄，欢迎下次光临!" + "\t 服务端口为：" + serverPort);
+            }
+            return "商品已售罄，欢迎下次光临!" + "\t 服务端口为：" + serverPort;
+        } finally {
+            redisLock.unlock();
+            System.out.println("解锁成功");
+        }
+    }
+
+//    @ApiOperation(value = "redisson分布式2",tags = "RedLock分布式锁2")
+//    @RequestMapping(value = "/redisLockes",method = RequestMethod.POST)
+//    public Object redisLockes(){
+//        String redisKey = UUID.randomUUID().toString() + Thread.currentThread().getName();
+//        RLock redisLock=redissonClient.getLock(REDIS_LOCK);
+//        redisLock.lock();
+//        try {
+//            // 获取库存数量
+//            String goods = stringRedisTemplate.opsForValue().get(goodsKey);
+//            int goodsNum = goods == null ? 0: Integer.parseInt(goods);
+//            if (goodsNum > 0){
+//                int realNum = goodsNum - 1;
+//                stringRedisTemplate.opsForValue().set(goodsKey,String.valueOf(realNum));
+//                System.out.println("成功买到商品，库存剩余：" + realNum + "件" + "\t 服务端口为：" + serverPort);
+//
+//                return "成功买到商品，库存剩余：" + realNum + "件" + "\t 服务端口为：" + serverPort;
+//            }else {
+//                System.out.println("商品已售罄，欢迎下次光临!" + "\t 服务端口为：" + serverPort);
+//            }
+//            return "商品已售罄，欢迎下次光临!" + "\t 服务端口为：" + serverPort;
+//        } finally {
+//            redisLock.unlock();
+//            System.out.println("解锁成功");
+//        }
+//    }
+
+    @ApiOperation(value = "基于redis",tags ="单体架构下加锁" )
+    @RequestMapping(value = "/re",method = RequestMethod.POST)
+    public Object redisLock(){
+        synchronized (this) {
+            // 获取库存数量
+            String goods = stringRedisTemplate.opsForValue().get(goodsKey);
+            int goodsNum =goods==null? 0: Integer.parseInt(goods);
+            if (goodsNum > 0){
+                int realNum = goodsNum - 1;
+                stringRedisTemplate.opsForValue().set(goodsKey,String.valueOf(realNum));
+                System.out.println("成功买到商品，库存剩余：" + realNum + "件" + "\t 服务端口为：" + serverPort);
+                return "成功买到商品，库存剩余：" + realNum + "件" + "\t 服务端口为：" + serverPort;
+            }else {
+                System.out.println("商品已售罄，欢迎下次光临!" + "\t 服务端口为：" + serverPort);
+            }
+            return "商品已售罄，欢迎下次光临!" + "\t 服务端口为：" + serverPort;
+        }
+    }
 
     @ApiOperation(value = "setSort",tags = "setSort的测试")
     @RequestMapping(value = "/setSort",method = RequestMethod.POST)

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeoutException;
 
 @Api(value = "rabbitmq")
@@ -68,7 +69,7 @@ public class RabbitmqController {
              * */
             channel.basicPublish("directTransactionExchange",
                     "transactionRoutingKey",null,
-                    message.getBytes("utf-8"));
+                    message.getBytes(StandardCharsets.UTF_8));
             /**提交事务
              * */
             channel.txCommit();
