@@ -14,6 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @ServerEndpoint(value = "/websocket/{userName}")
 @Component
 public class WebSocket {
+    //ws://localhost:8200/websocket/{username}
     private final static Logger logger = LogManager.getLogger(WebSocket.class);
 
     /**

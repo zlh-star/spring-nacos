@@ -39,7 +39,7 @@ public class Test {
     private static final String SECRETKEY = "KJHUhjjJYgYUllVbXhKDHXhkSyHjlNiVkYzWTBac1Yxkjhuad";
 
     // expirationDate 生成jwt的有效期，单位秒
-    private static final long expirationDate = 10;
+    private static final long expirationDate = 10*60;
 
     // 生成JWT的时间
     long nowMillis = System.currentTimeMillis();
@@ -59,13 +59,12 @@ public class Test {
     @RequestMapping(value = "/bucket",method = RequestMethod.POST)
     public Object bucket(@RequestBody User user) throws IOException {
         long date=System.currentTimeMillis();
-        RBucket<String> bucket = redissonClient.getBucket("test");
-//        JWTUtils jwtUtils=new JWTUtils();
-//       System.out.println(token);
+        RBucket<String> bucket = redissonClient.getBucket("as");
         String token= bucket.get();
         if(token==null||"".equals(token)){
             //向客户端发送消息
-            webSocket.sendMessage("token不存在");
+//            webSocket.sendMessage("token不存在");
+            webSocket.sendMessageByUserName(user.getUserName(),"token不存在");
             return "token不存在";
         }
         if(date-nowMillis>expMillis){
@@ -266,7 +265,7 @@ public class Test {
         SecretKey key = generalKey(SECRETKEY + user.getPassword());
 
         // 获取私有声明
-//        Claims claims =
+//        Claims claims =Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody();
         log.info("解析后的token为：{}",Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody());
         return Jwts.parser()
                 // 设置签名的秘钥

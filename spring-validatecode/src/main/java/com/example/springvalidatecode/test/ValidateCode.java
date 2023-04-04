@@ -178,11 +178,11 @@ public class ValidateCode {
             for (int i = 0; i < stringNum; i++) {
                 random_string = drawString(g, random_string, i);
             }
-        }else {
-            for (int i = 0; i < stringNum; i++) {
-                random_string = drawStringA(g, random_string, i);
-            }
         }
+        for (int i = 0; i < stringNum; i++) {
+            random_string = drawStringA(g, random_string, i);
+        }
+
 
 
         System.out.println(random_string);
