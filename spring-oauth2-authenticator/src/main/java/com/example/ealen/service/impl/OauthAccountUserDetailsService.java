@@ -1,11 +1,14 @@
 package com.example.ealen.service.impl;
 
 
+import com.example.ealen.config.JwtConfig;
 import com.example.ealen.config.Result;
 import com.example.ealen.domain.entity.OauthAccount;
 import com.example.ealen.domain.mapper.OauthAccountMapper;
 import com.example.ealen.service.impl.OauthAccountUserDetails;
 import lombok.extern.slf4j.Slf4j;
+import org.redisson.api.RBucket;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -60,8 +63,9 @@ public class OauthAccountUserDetailsService implements UserDetailsService {
         } else {
             clientId = getClientIdByRequest();
         }
+
         // 获取用户
-        OauthAccount account = oauthAccountMapper.loadUserByUsername(clientId, username);
+        OauthAccount account = oauthAccountMapper.loadUserByUsername(clientId,username);
         // 用户不存在
         if (account == null || !account.getAccountNonDeleted()) {
             log.warn("account:{}",username+"用户不存在");
@@ -78,7 +82,9 @@ public class OauthAccountUserDetailsService implements UserDetailsService {
      */
     public String getClientIdByRequest() {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        if (attributes == null) throw new UnsupportedOperationException();
+        if (attributes == null) {
+            throw new UnsupportedOperationException();
+        }
         HttpServletRequest request = attributes.getRequest();
         UsernamePasswordAuthenticationToken client = authenticationConverter.convert(request);
         if (client == null) {

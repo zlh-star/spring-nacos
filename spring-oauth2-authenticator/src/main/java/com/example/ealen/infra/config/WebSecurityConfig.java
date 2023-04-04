@@ -42,22 +42,27 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                //请求跨域
                 .cors()
+                //关闭csrf保护
                 .and().csrf().disable()
+                //请求授权
                 .authorizeRequests()
                 //处理跨域请求中的Preflight请求
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
+                //Preflight请求设置为也允许，不做拦截
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-                .antMatchers(PERMIT_ALL_URL)
-                .permitAll()
+                //不需要授权的请求
+                .antMatchers(PERMIT_ALL_URL).permitAll()
                 .and()
                 .formLogin()
-                .loginProcessingUrl("/login")
+                .loginProcessingUrl("/oauth/**")
                 .usernameParameter("username")
                 .passwordParameter("password")
                 .successHandler(authenticationSuccessHandler())
                 .failureHandler(authenticationFailureHandler())
-                .and().logout()
+                .and()
+                .logout()
                 .logoutSuccessHandler(logoutSuccessHandler())
                 .deleteCookies("JSESSIONID")
                 .and().httpBasic();
