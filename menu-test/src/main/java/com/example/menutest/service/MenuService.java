@@ -16,6 +16,8 @@ public interface MenuService {
 
     public List<MenuBo> getNextChildMenuList(List<MenuBo> menuBoList);
 
+    MenuBo getParentMenu(String menuParentId);
+
     /**
      * 获取所有的菜单
      * @return

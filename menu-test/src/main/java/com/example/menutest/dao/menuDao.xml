@@ -38,6 +38,13 @@
         from lc_menu
     </select>
 
+    <select id="getParentMenu" resultMap="MenuBo">
+        select t.*
+        from lc_menu t
+		WHERE
+		t.MENU_ID=#{menuParentId}
+    </select>
+
     <select id="roleMenuList" resultMap="roleMenuBo">
         select
         a.MENU_TITLE,

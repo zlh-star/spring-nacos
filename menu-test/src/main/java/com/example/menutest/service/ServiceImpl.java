@@ -36,6 +36,11 @@ public class ServiceImpl implements MenuService  {
         return boList;
     }
 
+    @Override
+    public MenuBo getParentMenu(String menuParentId) {
+        return menuDao.getParentMenu(menuParentId);
+    }
+
     private MenuBo list(MenuBo menuBo1,List<MenuBo> menuBos){
         List<MenuBo> boList=new ArrayList<>();
         menuBos.forEach(menuBo -> {

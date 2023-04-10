@@ -49,6 +49,23 @@ public class TestController {
         });
     }
 
+    @ApiOperation(value = "递归",tags = "向上递归")
+    @RequestMapping(value = "digui2",method = RequestMethod.GET)
+    public Object digui2 (String parentId){
+        List<MenuBo> boList=new ArrayList<>();
+        digui21(parentId,boList);
+        List<MenuBo> boList1= service.buildTree(boList);
+        return boList1;
+    }
+
+    private void digui21(String parentId,List<MenuBo> list){
+       MenuBo menuBo= menuService.getParentMenu(parentId);
+       if(menuBo!=null){
+           list.add(menuBo);
+           digui21(menuBo.getMenuParentId(),list);
+       }
+    }
+
     @ApiOperation(value = "测试",notes = "左连接测试", httpMethod = "POST")
     @RequestMapping(value = "/roleMenuList", method = RequestMethod.POST)
     public Object roleMenuList(String menuTitle){

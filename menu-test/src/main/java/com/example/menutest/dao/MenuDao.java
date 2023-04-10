@@ -16,6 +16,8 @@ public interface MenuDao {
      */
     public List<MenuBo> getNextChildMenu(String menuId);
 
+    MenuBo getParentMenu(String menuParentId);
+
     /**
      * 获取所有的菜单
      * @return
