@@ -177,16 +177,12 @@ public class TestController {
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         SearchRequest searchRequest = new SearchRequest(indexName);
         BoolQueryBuilder boolQueryBuilder= QueryBuilders.boolQuery();
-        if(demoDto.getId()!=null&&demoDto.getId()!=""){
+        if(demoDto.getId()!=null&& !"".equals(demoDto.getId())){
             boolQueryBuilder.must(QueryBuilders.termQuery("id.keyword",demoDto.getId()));
-//            boolQueryBuilder.must(QueryBuilders.termQuery("name.keyword",demoDto.getName()))
-//                     .must(QueryBuilders.rangeQuery("date")
-//                             .gte(demoDto.getLoginTime())
-//                             .lte(demoDto.getLogoffTime()));
 
         }if(demoDto.getName()!=null&& !"".equals(demoDto.getName())){
             boolQueryBuilder.must(QueryBuilders.termQuery("name.keyword",demoDto.getName()));
-            boolQueryBuilder.must(QueryBuilders.rangeQuery("date")
+            boolQueryBuilder.must(QueryBuilders.rangeQuery("date.keyword")
                     .gte(demoDto.getLoginTime())
                     .lte(demoDto.getLogoffTime()));
 
