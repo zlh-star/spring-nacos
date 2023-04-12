@@ -12,6 +12,7 @@ public class Config {
     @Bean
     KeyResolver userKeyResolver() {
 //        return exchange -> Mono.just(exchange.getRequest().getQueryParams().getFirst("user"));
+
         return  exchange -> Mono.just(Objects.requireNonNull(exchange.getRequest().getRemoteAddress()).getHostName());
     }
 }
