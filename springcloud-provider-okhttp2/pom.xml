@@ -8,9 +8,9 @@
         <version>2.1.8.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <artifactId>springcloud-provider-okhttp</artifactId>
+    <artifactId>springcloud-provider-okhttp2</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>springcloud-provider-okhttp</name>
+    <name>springcloud-provider-okhttp2</name>
     <description>Demo project for Spring Boot</description>
     <packaging>jar</packaging>
 
