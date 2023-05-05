@@ -10,7 +10,9 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: localhost:8848
+        serverAddr: localhost:8848
+        username: nacos
+        password: nacos
     gateway:
       routes:
         - id: getaway-service

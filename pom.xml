@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.example</groupId>
-    <artifactId>spring nacos</artifactId>
+    <artifactId>spring-nacos</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
     <modules>
@@ -51,6 +51,8 @@
         <module>menu-test</module>
         <module>springboot-easyexcel</module>
         <module>spring-easyexcel-input</module>
+        <module>spring-cloud-dubbo</module>
+        <!--        <module>dubbo-api</module>-->
     </modules>
 
 

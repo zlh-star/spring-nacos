@@ -3,9 +3,11 @@ package com.example.springbootmybatis0.service.serviceImpl;
 import com.example.springbootmybatis0.bean.User;
 import com.example.springbootmybatis0.service.UserService;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 @Component
 public class UserServiceImpl implements UserService {
     @Override

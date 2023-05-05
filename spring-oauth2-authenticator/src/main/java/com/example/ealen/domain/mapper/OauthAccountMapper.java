@@ -14,6 +14,7 @@ public interface OauthAccountMapper extends BaseMapper<OauthAccount> {
      * @param username 用户名
      * @return 用户对象
      */
+
     OauthAccount loadUserByUsername(@Param("clientId") String clientId,@Param("username") String username);
 
 }

@@ -8,7 +8,6 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication
-@EntityScan("com.example.springbootmybatis0.service")
 @EnableDiscoveryClient
 @EnableSwagger2
 public class SpringBootMybatis0Application {

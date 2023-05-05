@@ -8,7 +8,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-@MapperScan("com.example.springboottest.dao")
 @EnableSwagger2
 public class SpringbootTestApplication {
 

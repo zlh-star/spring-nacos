@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Service("MenuService")
+@Service
 public class ServiceImpl implements MenuService  {
     @Autowired
     private MenuDao menuDao;

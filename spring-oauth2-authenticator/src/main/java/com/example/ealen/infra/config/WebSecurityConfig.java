@@ -3,6 +3,7 @@ package com.example.ealen.infra.config;
 import com.example.ealen.domain.vo.AuthResp;
 import com.example.ealen.service.impl.OauthAccountUserDetailsService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
@@ -14,6 +15,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
@@ -41,6 +43,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
+//        /* 跨域伪造请求限制=无效 */
+//        http.csrf().disable();
+//        /* 开启授权认证 */
+//        http.authorizeRequests()
+//                .antMatchers("/oauth/**").permitAll() //允许访问授权接口
+//                .anyRequest().authenticated();
+//        /* 登录配置 */
+//        http.formLogin().permitAll();
+//        /* session 设置为 IF_REQUIRED 有需要才生成 */
+//        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
         http
                 //请求跨域
                 .cors()

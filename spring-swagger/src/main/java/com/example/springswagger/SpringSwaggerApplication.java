@@ -9,8 +9,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-@MapperScan("com.example.springswagger.dao")
-//@ComponentScan(basePackages = {"com.example.springswagger.service"})
 @EnableSwagger2
 public class SpringSwaggerApplication {
 

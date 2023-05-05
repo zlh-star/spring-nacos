@@ -63,7 +63,7 @@ public class UserController {
 
     @PostMapping("/insertUser")
     @ApiOperation(value ="新增新用户",notes ="更具相关信息添加新用户" )
-    public List<User> insertUser(String id,String myName,String age,User user){
+    public List insertUser(String id, String myName, String age, User user){
 //        user.setId("id");
 //        user.setMyName("myName");
 //        user.setAge("age");

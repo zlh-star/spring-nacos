@@ -1,7 +1,6 @@
 package com.example.springboottest.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.example.springboottest.model.Student;
 import com.example.springboottest.model.UserCondition;
 import com.example.springboottest.model.UserModel;
 import org.apache.ibatis.annotations.Mapper;

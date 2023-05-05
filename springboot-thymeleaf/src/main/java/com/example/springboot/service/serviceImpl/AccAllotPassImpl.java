@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service("AccAllotPassDao")
+@Service
 public class AccAllotPassImpl implements AccAllotPassDao, IAccAllotPassService {
     @Autowired
     public AccAllotPassDao accAllotPassDao;

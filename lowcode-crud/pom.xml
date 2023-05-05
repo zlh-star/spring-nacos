@@ -11,7 +11,7 @@
     </parent>
 
     <groupId>com.sergio</groupId>
-    <artifactId>generator-code</artifactId>
+    <artifactId>lowcode-crud</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
     <name>lowcode-crud</name>

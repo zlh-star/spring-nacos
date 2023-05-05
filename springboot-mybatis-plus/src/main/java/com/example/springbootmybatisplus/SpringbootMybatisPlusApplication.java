@@ -7,7 +7,6 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-@MapperScan("com.example.springbootmybatisplus.mapper")
 public class SpringbootMybatisPlusApplication {
 
     public static void main(String[] args) {

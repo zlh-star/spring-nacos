@@ -2,8 +2,7 @@ package com.example.menutest.dao;
 
 import com.example.menutest.bo.MenuBo;
 import com.example.menutest.bo.roleMenuBo;
-import org.apache.ibatis.annotations.Param;
-import org.mapstruct.Mapper;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 

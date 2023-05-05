@@ -10,7 +10,6 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-@MapperScan("com.example.springboot.dao")
 public class SpringbootApplication {
 
     public static void main(String[] args) {

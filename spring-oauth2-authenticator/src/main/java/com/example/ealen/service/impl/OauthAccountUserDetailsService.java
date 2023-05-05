@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RBucket;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -31,6 +32,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 @Slf4j
 @Service
@@ -47,25 +49,26 @@ public class OauthAccountUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String clientId;
-        if (authentication != null) {
-            Object principal = authentication.getPrincipal();
-            if (principal instanceof User) {
-                User clientUser = (User) principal;
-                clientId = clientUser.getUsername();
-            } else if (principal instanceof OauthAccountUserDetails) {
-                getClientIdByRequest();
-                return (OauthAccountUserDetails) principal;
-            } else {
-                throw new UnsupportedOperationException();
-            }
-        } else {
-            clientId = getClientIdByRequest();
-        }
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        String clientId;
+//        if (authentication != null) {
+//            Object principal = authentication.getPrincipal();
+//            if (principal instanceof User) {
+//                User clientUser = (User) principal;
+//                clientId = clientUser.getUsername();
+//            } else if (principal instanceof OauthAccountUserDetails) {
+//                getClientIdByRequest();
+//                return (OauthAccountUserDetails) principal;
+//            } else {
+//                throw new UnsupportedOperationException();
+//            }
+//        } else {
+//            clientId = getClientIdByRequest();
+//        }
 
         // 获取用户
-        OauthAccount account = oauthAccountMapper.loadUserByUsername(clientId,username);
+//        clientId,
+        OauthAccount account = oauthAccountMapper.loadUserByUsername("ABC",username);
         // 用户不存在
         if (account == null || !account.getAccountNonDeleted()) {
             log.warn("account:{}",username+"用户不存在");
@@ -74,6 +77,7 @@ public class OauthAccountUserDetailsService implements UserDetailsService {
         // 授权
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
         return new OauthAccountUserDetails(account, authorities);
+//        return userDetails;
     }
 
 

@@ -1,10 +1,11 @@
 package com.example.springswagger.dao;
 
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
+@Mapper
 public interface UserDao {
     User getUserById(String id);
     List<User> getAllUsers();

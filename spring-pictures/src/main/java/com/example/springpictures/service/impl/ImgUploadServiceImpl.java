@@ -15,8 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.concurrent.Callable;
 
 
-@Service("iImgUploadService")
-@MapperScan("com.example.springpictures.service")
+@Service
 public class ImgUploadServiceImpl extends ServiceImpl<ImageUploadMapper, Count> implements IImgUploadService {
 
     @Autowired

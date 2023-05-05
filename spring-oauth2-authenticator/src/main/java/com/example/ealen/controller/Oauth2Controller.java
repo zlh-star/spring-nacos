@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Date;
 
 @Api(value = "Oauth2")
-@RequestMapping("/oauth")
+@RequestMapping("/oauth1")
 @RestController
 public class Oauth2Controller {
 
