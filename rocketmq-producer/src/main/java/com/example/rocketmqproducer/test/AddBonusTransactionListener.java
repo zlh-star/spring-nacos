@@ -1,7 +1,6 @@
 package com.example.rocketmqproducer.test;
 
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson2.JSONArray;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.example.rocketmqproducer.dto.Account;
 import com.example.rocketmqproducer.dto.RocTran;
@@ -19,7 +18,6 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 @RocketMQTransactionListener
 public class AddBonusTransactionListener implements RocketMQLocalTransactionListener {
@@ -50,19 +48,12 @@ public class AddBonusTransactionListener implements RocketMQLocalTransactionList
         Account account=JSONObject.parseObject(payload,Account.class);
         List<Account> accountList=new ArrayList<>();
         accountList.add(account);
-//        Object account=headers.get("my_data").;
-//        Account account1=null;
-//        if(Account instanceof ){
-//            account1= (Account) account;
-//        }
-//        List<Account> accountList=new ArrayList<>();
-//        accountList.add(account1);
         System.out.println("myData = " + myData);
         String argData = arg.toString();
         System.out.println("argData = " + argData);
 
         try {
-            changeStatuswithRocketMqLog(accountList,transactionId);
+            changeStatuswithRocketMqLog(account.getId(),accountList,transactionId);
             //可以消费该消息
             return RocketMQLocalTransactionState.COMMIT;
         } catch (Exception e) {
@@ -72,7 +63,7 @@ public class AddBonusTransactionListener implements RocketMQLocalTransactionList
     }
 
     /**
-     * 根据本地日志判断消息是需要提交还是回滚
+     * 根据本地日志判断消息是否发送完整，是否可进行消费
      * @param msg
      * @return
      */
@@ -90,14 +81,14 @@ public class AddBonusTransactionListener implements RocketMQLocalTransactionList
     }
 
     @Transactional(rollbackFor = RuntimeException.class)
-    public void changeStatuswithRocketMqLog(List<Account> accountList,String transactionId){
+    public void changeStatuswithRocketMqLog(String id,List<Account> accountList,String transactionId){
         accountList.forEach(account -> {
             userMapper.insert(account);
         });
         //插入事务表
         rocketMqTransactionLogMapper.insert(
                 RocTran.builder()
-                        .id("1")
+                        .id(id)
                         .transactionId(transactionId)
                         .log("执行下一步操作")
                         .build()
