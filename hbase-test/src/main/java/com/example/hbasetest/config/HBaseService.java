@@ -6,6 +6,7 @@ import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.client.ResultScanner;
 import org.apache.hadoop.hbase.filter.FilterList;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface HBaseService {
@@ -70,6 +71,8 @@ public interface HBaseService {
     Boolean deleteColumnFamily(TableName tableName, byte[] columnFamily);
 
     Boolean deleteQualifier(String tableName, String rowKey, String cfName,String qualifier);
+
+    Boolean delTableAsync(List<TableName> tableNames)throws IOException;
 
 
 }

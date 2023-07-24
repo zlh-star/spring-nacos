@@ -169,4 +169,23 @@ public class HBaseServiceImpl implements HBaseService {
         }
         return null;
     }
+
+    @Override
+    public Boolean delTableAsync(List<TableName> tableNames) throws IOException  {
+        HBaseAdmin admin = (HBaseAdmin)connection.getAdmin();
+        if(admin!=null){
+            tableNames.forEach(tableName -> {
+                try {
+                    //将表状态设置为disable
+                    admin.disableTableAsync(tableName);
+                    //delete表
+                    admin.deleteTableAsync(tableName);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+            return true;
+        }
+        return false;
+    }
 }
