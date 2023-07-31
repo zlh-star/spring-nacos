@@ -5,13 +5,14 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.hbasetest.bean.User;
 import com.example.hbasetest.config.HBaseService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+//import io.swagger.annotations.Api;
+//import io.swagger.annotations.ApiOperation;
 import org.apache.hadoop.hbase.CompareOperator;
 import org.apache.hadoop.hbase.TableName;
 import org.apache.hadoop.hbase.client.*;
 import org.apache.hadoop.hbase.filter.*;
 import org.apache.hadoop.hbase.util.Bytes;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,16 +22,27 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@Api(tags = "HBASE")
+//@Api(tags = "HBASE")
 @RestController
 public class TestController {
 
     @Resource
     private HBaseService baseService;
 
+    @Value("${zhaolinhai}")
+    private String test;
 
 
-    @ApiOperation(value = "getScanner",tags = "获取Scanner")
+    @RequestMapping(value = "/getpro",method = RequestMethod.GET)
+    public void getPro(){
+        if("zlh".equals(test)){
+            System.out.println("success");
+        }
+    }
+
+
+
+//    @ApiOperation(value = "getScanner",tags = "获取Scanner")
     @RequestMapping(value = "/getScanner",method = RequestMethod.GET)
     public Object getScanner(){
         ResultScanner results=baseService.getScanner("test");
@@ -59,7 +71,7 @@ public class TestController {
 //        return Bytes.toString(a);
     }
 
-    @ApiOperation(value = "testRow",tags = "存入实体类")
+//    @ApiOperation(value = "testRow",tags = "存入实体类")
     @RequestMapping(value = "/testRow",method = RequestMethod.POST)
     public Object testRow(){
         //        String[] ab={"info2","info3"};
@@ -84,7 +96,7 @@ public class TestController {
         }
     }
 
-    @ApiOperation(value = "testRows",tags = "存入")
+//    @ApiOperation(value = "testRows",tags = "存入")
     @RequestMapping(value = "/testRows",method = RequestMethod.POST)
     public Object testRows(){
         //        String[] ab={"info2","info3"};
@@ -106,7 +118,7 @@ public class TestController {
 
 
 
-    @ApiOperation(value = "test",tags = "获取")
+//    @ApiOperation(value = "test",tags = "获取")
     @RequestMapping(value = "/test",method = RequestMethod.GET)
     public Object test() throws IOException {
 //        baseService.putRow("zlh","1","info1","1","zhaolinhai");
@@ -139,7 +151,7 @@ public class TestController {
         return Bytes.toString(a);
     }
 
-    @ApiOperation(value = "deleteColumnFamily",tags = "列簇删除")
+//    @ApiOperation(value = "deleteColumnFamily",tags = "列簇删除")
     @RequestMapping(value = "/deleteColumnFamily",method = RequestMethod.DELETE)
     public Object deleteColumnFamily(){
         try {
@@ -151,7 +163,7 @@ public class TestController {
     }
 
 
-    @ApiOperation(value = "deleteTable",tags = "表删除")
+//    @ApiOperation(value = "deleteTable",tags = "表删除")
     @RequestMapping(value = "/deleteTable",method = RequestMethod.DELETE)
     public Object deleteTable(){
         List<TableName> list=new ArrayList<>();
