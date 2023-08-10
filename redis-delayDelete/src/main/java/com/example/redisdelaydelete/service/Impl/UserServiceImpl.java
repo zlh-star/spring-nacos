@@ -2,7 +2,6 @@ package com.example.redisdelaydelete.service.Impl;
 
 import com.alibaba.fastjson2.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import com.example.redisdelaydelete.mapper.User;
@@ -22,7 +21,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     private UserMapper userMapper;
 
     @Autowired
-    private RedisTemplate redisTemplate;
+    private RedisTemplate<String, String> redisTemplate;
 
 
     @Override
@@ -62,13 +61,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         String key = "user_" + age;
         Boolean hasKey = redisTemplate.hasKey(key);
 
-        ValueOperations operations = redisTemplate.opsForValue();
+        ValueOperations<String, String> operations = redisTemplate.opsForValue();
         // 缓存存在
-        if (hasKey) {
-            String str = (String) operations.get(key);
+        if (Boolean.TRUE.equals(hasKey)) {
+            String str = operations.get(key);
 //            User student = new Gson().fromJson(str, User.class);
-            User user= JSON.parseObject(str,User.class);
-            return user;
+            return JSON.parseObject(str,User.class);
         }
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
 
