@@ -72,6 +72,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
 
         queryWrapper
+                .isNotNull("nickName")
                 .ge("age", age);
         User user =userMapper.selectOne(queryWrapper) ;
 //        String str = new Gson().toJson(student);
