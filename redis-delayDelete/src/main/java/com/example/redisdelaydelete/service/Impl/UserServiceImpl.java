@@ -1,6 +1,7 @@
 package com.example.redisdelaydelete.service.Impl;
 
 import com.alibaba.fastjson2.JSON;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
@@ -69,11 +70,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             User user= JSON.parseObject(str,User.class);
             return user;
         }
-        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
 
         queryWrapper
-                .isNotNull("nickName")
-                .ge("age", age);
+                .isNotNull(User::getNickName)
+                .ge(User::getAge, age);
         User user =userMapper.selectOne(queryWrapper) ;
 //        String str = new Gson().toJson(student);
         String str= JSON.toJSONString(user);
