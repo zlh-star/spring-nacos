@@ -13,6 +13,7 @@ import org.apache.hadoop.hbase.client.*;
 import org.apache.hadoop.hbase.filter.*;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,6 +25,7 @@ import java.util.List;
 
 //@Api(tags = "HBASE")
 @RestController
+@RefreshScope
 public class TestController {
 
     @Resource
@@ -34,10 +36,12 @@ public class TestController {
 
 
     @RequestMapping(value = "/getpro",method = RequestMethod.GET)
-    public void getPro(){
+    public boolean getPro(){
         if("zlh".equals(test)){
             System.out.println("success");
+            return true;
         }
+        return false;
     }
 
 
