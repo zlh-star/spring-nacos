@@ -2,6 +2,8 @@ package com.example.test1streamconsumerrabbit.service;
 
 //import com.example.streamrabbitmqconsumer.bean.DemoDto;
 
+import com.alibaba.fastjson.JSONObject;
+import com.example.test1streamconsumerrabbit.config.DemoDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.EnableBinding;
@@ -17,8 +19,8 @@ import java.util.function.Consumer;
 @Slf4j
 public class MessageListener {
 
-//    @Autowired
-//    private AuditService auditService;
+    @Autowired
+    private AuditService auditService;
 
 //    @StreamListener(MessageCha.MYINPUT)
 //    public void input(String message){
@@ -27,6 +29,7 @@ public class MessageListener {
 //    }
     @Bean
     public Consumer<String> myinput(){
-        return log::info;
+        return message-> auditService
+                .insertLog(JSONObject.parseArray(message, DemoDto.class));
     }
 }

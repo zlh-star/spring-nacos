@@ -1,6 +1,6 @@
 package com.example.test1streamconsumerrabbit.service;
 
-//import com.example.streamrabbitmqconsumer.bean.DemoDto;
+import com.example.test1streamconsumerrabbit.config.DemoDto;
 import org.mapstruct.Mapper;
 
 import java.util.List;
@@ -12,13 +12,13 @@ public interface AuditService {
      * 将日志记录es（批量插入）
      * @param auditBoList
      */
-//    public void insertLog(List<DemoDto> auditBoList);
+    public void insertLog(List<DemoDto> auditBoList);
 
     /**
      * 单条日志插入
      * @param demoDto
      */
-//    public void inLog(DemoDto demoDto);
+    public void inLog(DemoDto demoDto);
 
     /**
      * 根据ID删除日志
