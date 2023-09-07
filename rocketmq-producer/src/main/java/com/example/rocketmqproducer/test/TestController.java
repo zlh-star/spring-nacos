@@ -1,5 +1,6 @@
 package com.example.rocketmqproducer.test;
 
+import com.alibaba.fastjson.JSON;
 import com.example.rocketmqproducer.dto.Account;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -76,7 +77,12 @@ public class TestController {
             account.setId("1");
             account.setNickName("zhaolinhai");
             account.setAge("24");
+            //判断该条消息是否可以进行消费，否则回滚删除
             producerDemo.RocketTx(account);
+            List<String> mes=new ArrayList<>();
+            mes.add(JSON.toJSONString(account));
+            //消费该消息
+            producerDemo.AsyncSendMessage(topic,mes);
         } catch (Exception e) {
             e.printStackTrace();
         }

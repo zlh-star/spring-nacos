@@ -12,27 +12,27 @@ import java.util.Date;
 @RocketMQMessageListener(topic = "${rocketmq.consumer.topic}",consumerGroup ="${rocketmq.consumer.group}")
 @Component
 @Slf4j
-public class ConsumerTagADemo implements RocketMQListener<Account> {
+public class ConsumerTagADemo implements RocketMQListener<String> {
 
     public static final String DATE_AND_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss" ;
 
-//    @Override
-//    public void onMessage(String o) {
-//        Date start = new Date();
-//        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_AND_TIME_FORMAT);
-//        String formatDate = dateFormat.format(start);
-//        System.out.println("time"+formatDate);
-//        System.out.println("ConsumerTagADemo onMessage="+o);
-//    }
-
     @Override
-    public void onMessage(Account account) {
+    public void onMessage(String o) {
         Date start = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_AND_TIME_FORMAT);
         String formatDate = dateFormat.format(start);
-        log.info("success");
         System.out.println("time"+formatDate);
-        System.out.println("ConsumerTagADemo onMessage="+account);
+        System.out.println("ConsumerTagADemo onMessage="+o);
     }
+
+//    @Override
+//    public void onMessage(Account account) {
+//        Date start = new Date();
+//        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_AND_TIME_FORMAT);
+//        String formatDate = dateFormat.format(start);
+//        log.info("success");
+//        System.out.println("time"+formatDate);
+//        System.out.println("ConsumerTagADemo onMessage="+account);
+//    }
 }
 
