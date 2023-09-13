@@ -150,6 +150,7 @@ public class TestController {
         BoolQueryBuilder boolQueryBuilder= QueryBuilders.boolQuery()
                 .must(QueryBuilders.matchAllQuery());
         searchSourceBuilder.query(boolQueryBuilder);
+        searchSourceBuilder.trackTotalHits(Boolean.TRUE);
         searchRequest.source(searchSourceBuilder);
         SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
         list.add(searchResponse);
@@ -200,6 +201,7 @@ public class TestController {
 //        boolQueryBuilder.minimumShouldMatch(1)
 //        searchSourceBuilder.query(QueryBuilders.termQuery("name",demoDto.getName()));
         searchSourceBuilder.query(boolQueryBuilder);
+        searchSourceBuilder.trackTotalHits(Boolean.TRUE);
         //按照日期降序排列
 //        searchSourceBuilder.sort("date.keyword", SortOrder.DESC);
         searchSourceBuilder.from((a-1)*b);
