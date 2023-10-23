@@ -1,6 +1,7 @@
 package com.example.menutest.controller;
 
 import com.example.menutest.bo.MenuBo;
+import com.example.menutest.config.EntityUtils;
 import com.example.menutest.config.Result;
 import com.example.menutest.service.MenuService;
 import com.example.menutest.service.ServiceImpl;
@@ -23,6 +24,20 @@ public class TestController {
 
     @Autowired
     private MenuService menuService;
+
+
+    @ApiOperation(value = "test3",tags = "test3")
+    @RequestMapping(value = "/test3",method = RequestMethod.POST)
+    public Object test3(){
+
+        MenuBo menuBo=new MenuBo();
+        menuBo.setMenuId("1");
+        menuBo.setMenuTitle("ceshi");
+        Map<String,Object>test= EntityUtils.entityToMap(menuBo);
+        EntityUtils.mapToEntity(test,MenuBo.class);
+        return test;
+//        List<MenuBo>test1= EntityUtils.mapToEntity(test,MenuBo.class);
+    }
 
     @ApiOperation(value = "递归",tags = "递归算法")
     @RequestMapping(value = "/digui",method = RequestMethod.POST)

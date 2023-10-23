@@ -4,7 +4,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel(value = "角色菜单配置类")
-public class roleMenuBo {
+public class roleMenuBo extends MenuBo {
 
     @ApiModelProperty(value ="菜单ID",name = "menuId")
     private String roleId;
