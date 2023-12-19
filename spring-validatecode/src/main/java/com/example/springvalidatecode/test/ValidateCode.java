@@ -19,10 +19,10 @@ public class ValidateCode {
     private boolean validate;
 
     private static Random random = new Random();
-    private int width = 160;// 宽
-    private int height = 40;// 高
+    private int width = 40;// 长
+    private int height = 10;// 宽
     private int lineSize = 30;// 干扰线数量
-    private int stringNum = 4;//随机产生字符的个数
+    private int stringNum = 6;//随机产生字符的个数
 
     private String randomString = "0123456789abcdefghijklmnopqrstuvwxyz";
 
@@ -57,8 +57,8 @@ public class ValidateCode {
      *  绘制干扰线
      */
     private void drawLine(Graphics g) {
-        int x = random.nextInt(width);
-        int y = random.nextInt(height);
+        int x = random.nextInt(width*stringNum);
+        int y = random.nextInt(height*stringNum);
         int xl = random.nextInt(20);
         int yl = random.nextInt(10);
         g.drawLine(x, y, x + xl, y + yl);
@@ -103,9 +103,9 @@ public class ValidateCode {
     }
 
     /*
-     *  生成随机图片(json)
+     *  生成加密json
      */
-    public String getRandomCodeImage(HttpServletRequest request, HttpServletResponse response) {
+    public String getRandomCodeImage(HttpServletRequest request, HttpServletResponse response)  {
         HttpSession session = request.getSession();
         // BufferedImage类是具有缓冲区的Image类,Image类是用于描述图像信息的类
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_BGR);
@@ -121,7 +121,7 @@ public class ValidateCode {
 
         // 绘制随机字符
         String random_string = "";
-        if(!validate){
+        if(validate){
             for (int i = 0; i < stringNum; i++) {
                 random_string = drawString(g, random_string, i);
             }
@@ -130,7 +130,6 @@ public class ValidateCode {
                 random_string = drawStringA(g, random_string, i);
             }
         }
-
 
         System.out.println(random_string);
 
@@ -141,7 +140,7 @@ public class ValidateCode {
 
         String base64String = "";
         try {
-//            ImageIO.write(image, "PNG", response.getOutputStream());
+
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             ImageIO.write(image, "PNG", byteArrayOutputStream);
 
@@ -158,12 +157,12 @@ public class ValidateCode {
     /*
      *  生成随机图片
      */
-    public void getRandomCodeImages(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public String getRandomCodeImages(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
         // BufferedImage类是具有缓冲区的Image类,Image类是用于描述图像信息的类
-        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_BGR);
+        BufferedImage image = new BufferedImage(width*stringNum, height*stringNum, BufferedImage.TYPE_INT_BGR);
         Graphics g = image.getGraphics();
-        g.fillRect(0, 0, width, height);
+        g.fillRect(0, 0, width*stringNum, height*stringNum);
         g.setColor(getRandomColor(105, 189));
         g.setFont(getFont());
 
@@ -174,16 +173,15 @@ public class ValidateCode {
 
         // 绘制随机字符
         String random_string = "";
-        if(!validate){
+        if (validate) {
             for (int i = 0; i < stringNum; i++) {
                 random_string = drawString(g, random_string, i);
             }
+        } else {
+            for (int i = 0; i < stringNum; i++) {
+                random_string = drawStringA(g, random_string, i);
+            }
         }
-        for (int i = 0; i < stringNum; i++) {
-            random_string = drawStringA(g, random_string, i);
-        }
-
-
 
         System.out.println(random_string);
 
@@ -192,19 +190,7 @@ public class ValidateCode {
         session.removeAttribute(sessionKey);
         session.setAttribute(sessionKey, random_string);
 
-//        String base64String = "";
-//        try {
-            ImageIO.write(image, "PNG", response.getOutputStream());
-//            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-//            ImageIO.write(image, "PNG", byteArrayOutputStream);
-//
-//            byte[] bytes = byteArrayOutputStream.toByteArray();
-//            Base64.Encoder encoder = Base64.getEncoder();
-//            base64String = encoder.encodeToString(bytes);
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return base64String;
+        ImageIO.write(image, "PNG", response.getOutputStream());
+        return random_string;
     }
 }

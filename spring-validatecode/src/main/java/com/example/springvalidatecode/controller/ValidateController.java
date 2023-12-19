@@ -25,7 +25,7 @@ public class ValidateController {
 
     @ApiOperation(value = "validate",tags = "验证码图片")
     @RequestMapping(value = "/getCaptchaImage",method = RequestMethod.POST)
-    public void getCaptcha(HttpServletRequest request, HttpServletResponse response) {
+    public Object getCaptcha(HttpServletRequest request, HttpServletResponse response) {
 
         try {
 
@@ -37,10 +37,11 @@ public class ValidateController {
             ValidateCode validateCode = new ValidateCode();
 
             // 直接返回图片
-            validateCode.getRandomCodeImages(request, response);
+           return validateCode.getRandomCodeImages(request, response);
 
         } catch (Exception e) {
             e.printStackTrace();
+            return e;
         }
     }
 
