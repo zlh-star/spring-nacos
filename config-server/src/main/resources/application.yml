@@ -9,14 +9,14 @@ spring:
         serverAddr: localhost:8848
         username: nacos
         password: nacos
-    config:
-      server:
-        git:
-          uri: https://github.com/zlh-star/test
-          default-label: main
-          search-paths: springcloud-config
-          username: zlh-star
-          password: "@zlh199806"
+#    config:
+#      server:
+#        git:
+#          uri: https://github.com/zlh-star/test
+#          default-label: main
+#          search-paths: springcloud-config
+#          username: zlh-star
+#          password: "@zlh199806"
 management:
   endpoints:
     web:
