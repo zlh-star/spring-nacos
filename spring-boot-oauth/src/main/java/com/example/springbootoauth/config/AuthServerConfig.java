@@ -28,9 +28,9 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.inMemory()
                 //自己的clientId，不要简单命名为clientId，可能出现问题
-                .withClient("MyclientId")
+                .withClient("ABC")
                 //加密的密码
-                .secret(new BCryptPasswordEncoder().encode("Mysecret"))
+                .secret(new BCryptPasswordEncoder().encode("admin"))
                 //注册验证方式
                 .authorizedGrantTypes("authorization_code","password","refresh_token")
                 .scopes("all")

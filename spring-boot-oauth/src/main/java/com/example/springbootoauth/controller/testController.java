@@ -19,4 +19,11 @@ public class testController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return authentication.getName();
     }
+
+    @ApiOperation(value = "",tags = "")
+    @RequestMapping(value = "/token",method = RequestMethod.GET)
+    public Object token(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication.getName();
+    }
 }

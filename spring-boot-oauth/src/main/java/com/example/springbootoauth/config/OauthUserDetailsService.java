@@ -7,6 +7,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -42,23 +43,23 @@ public class OauthUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        String clientId="ABC";
+//        String clientId="ABC";
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        String clientId;
-//        if (authentication != null) {
-//            Object principal = authentication.getPrincipal();
-//            if (principal instanceof User) {
-//                User clientUser = (User) principal;
-//                clientId = clientUser.getUsername();
-//            } else if (principal instanceof OauthAccountUserDetails) {
-//                getClientIdByRequest();
-//                return (OauthAccountUserDetails) principal;
-//            } else {
-//                throw new UnsupportedOperationException();
-//            }
-//        } else {
-//            clientId = getClientIdByRequest();
-//        }
+        String clientId;
+        if (authentication != null) {
+            Object principal = authentication.getPrincipal();
+            if (principal instanceof User) {
+                User clientUser = (User) principal;
+                clientId = clientUser.getUsername();
+            } else if (principal instanceof OauthAccountUserDetails) {
+                getClientIdByRequest();
+                return (OauthAccountUserDetails) principal;
+            } else {
+                throw new UnsupportedOperationException();
+            }
+        } else {
+            clientId = getClientIdByRequest();
+        }
                 // 获取用户
                 OauthAccount account = oauthAccountMapper.loadUserByUsername(clientId, username);
                 // 用户不存在
