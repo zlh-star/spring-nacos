@@ -35,7 +35,7 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
                 .authorizedGrantTypes("authorization_code","password","refresh_token")
                 .scopes("all")
                 //跳转连接集合
-                .redirectUris("http://localhost:8115", "http://www.baidu.com");
+                .redirectUris("http://localhost:8115/swagger-ui.html", "https://www.baidu.com");
     }
 
     /** 配置token管理 */
