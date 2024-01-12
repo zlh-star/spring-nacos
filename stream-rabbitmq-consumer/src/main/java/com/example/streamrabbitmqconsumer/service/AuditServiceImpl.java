@@ -46,7 +46,7 @@ public class AuditServiceImpl implements AuditService {
 
 
     @Override
-    public void insertLog(List<DemoDto> auditBoList) {
+    public void insertLog(List<Object> auditBoList) {
         List<IndexRequest> indexRequests = new ArrayList<>();
         //批量插入日志
         auditBoList.forEach(e -> {

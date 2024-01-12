@@ -12,7 +12,7 @@ public interface AuditService {
      * 将日志记录es（批量插入）
      * @param auditBoList
      */
-    public void insertLog(List<DemoDto> auditBoList);
+    public void insertLog(List<Object> auditBoList);
 
     /**
      * 单条日志插入
