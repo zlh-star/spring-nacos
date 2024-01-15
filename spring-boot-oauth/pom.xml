@@ -13,6 +13,9 @@
     <artifactId>spring-boot-oauth</artifactId>
     <version>1.0-SNAPSHOT</version>
     <description>spring-boot-oauth</description>
+    <properties>
+        <java.version>1.8</java.version>
+    </properties>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
