@@ -7,9 +7,14 @@ import com.alibaba.nacos.api.PropertyKeyConst;
 import com.alibaba.nacos.api.config.ConfigService;
 import com.alibaba.nacos.api.config.listener.Listener;
 import com.alibaba.nacos.api.exception.NacosException;
+import com.netflix.zuul.ZuulFilter;
+import com.netflix.zuul.context.RequestContext;
+import com.netflix.zuul.exception.ZuulException;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.netflix.zuul.filters.CompositeRouteLocator;
+import org.springframework.cloud.netflix.zuul.filters.RouteLocator;
 import org.springframework.cloud.netflix.zuul.filters.ZuulProperties;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
@@ -17,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
@@ -25,10 +31,12 @@ import java.util.concurrent.Executor;
 
 @Slf4j
 @Service
-public class DynamicRouteServiceImpl implements DynamicRouteService {
+public class DynamicRouteServiceImpl extends ZuulFilter implements DynamicRouteService {
 
     private static final String DATA_ID = "zuul-refresh.json";
     private static final String Group = "DEFAULT_GROUP";
+
+    private final RouteLocator routeLocator;
 
     @Resource
     private ApplicationEventPublisher applicationEventPublisher;
@@ -38,6 +46,10 @@ public class DynamicRouteServiceImpl implements DynamicRouteService {
 
     @Autowired
     private ZuulProperties zuulProperties;
+
+    public DynamicRouteServiceImpl(RouteLocator routeLocator) {
+        this.routeLocator = routeLocator;
+    }
 
 
     @Bean
@@ -75,6 +87,11 @@ public class DynamicRouteServiceImpl implements DynamicRouteService {
 
     @Override
     public void refreshRoutes(List<ZuulRouteModel> routeList) {
+
+        RequestContext ctx = RequestContext.getCurrentContext();
+        HttpServletRequest request = ctx.getRequest();
+        log.info("--->>> TokenFilter {},{}", request.getMethod(), request.getRequestURL().toString());
+        String token = request.getParameter("token");//获取请求参数
         //读取原配置文件的路由配置
         Map<String, ZuulProperties.ZuulRoute> routes = zuulProperties.getRoutes();
 
@@ -98,6 +115,22 @@ public class DynamicRouteServiceImpl implements DynamicRouteService {
         log.info("[zuul动态路由] 刷新动态路由完成，现在的路由信息是：" + compositeRouteLocator.getRoutes());
         URI uri = UriComponentsBuilder.fromUriString(zuulRoute.getUrl())
                 .build().toUri();
+//        routeLocator.getMatchingRoute()
+
+        if (StringUtils.isNotBlank(token)) {//判断参数是否不为空
+            ctx.setSendZuulResponse(true);//对请求进行路由
+            ctx.setResponseStatusCode(200);
+//            ctx.setRouteHost();
+            ctx.setResponseBody("token is success");
+            ctx.set("isSuccess", true);
+//            return ctx;
+        } else {
+            ctx.setSendZuulResponse(false);//不对请求进行路由
+            ctx.setResponseStatusCode(400);
+            ctx.setResponseBody("token is empty");
+            ctx.set("isSuccess", false);
+//            return null;
+        }
     }
 
     /**
@@ -106,5 +139,27 @@ public class DynamicRouteServiceImpl implements DynamicRouteService {
     @Override
     public void afterPropertiesSet(List<ZuulRouteModel> routeList) {
         this.refreshRoutes(routeList);
+    }
+
+
+
+    @Override
+    public String filterType() {
+        return null;
+    }
+
+    @Override
+    public int filterOrder() {
+        return 0;
+    }
+
+    @Override
+    public boolean shouldFilter() {
+        return false;
+    }
+
+    @Override
+    public Object run() throws ZuulException {
+        return null;
     }
 }
