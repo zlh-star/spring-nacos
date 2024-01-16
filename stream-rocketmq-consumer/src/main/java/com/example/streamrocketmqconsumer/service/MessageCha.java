@@ -11,10 +11,10 @@ public interface MessageCha {
     /**
      * 消息生产者的配置
      */
-    String MYOUTPUT="myoutput";
-
-    @Output(MYOUTPUT)
-    MessageChannel myoutput();
+//    String MYOUTPUT="myoutput";
+//
+//    @Output(MYOUTPUT)
+//    MessageChannel myoutput();
 
 
     /**

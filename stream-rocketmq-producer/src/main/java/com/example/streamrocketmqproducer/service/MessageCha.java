@@ -20,7 +20,7 @@ public interface MessageCha {
     /**
      * 消息消费者的配置
      */
-    String MYINPUT="myinput";
-    @Input(MYINPUT)
-    SubscribableChannel myinput();
+//    String MYINPUT="myinput";
+//    @Input(MYINPUT)
+//    SubscribableChannel myinput();
 }
