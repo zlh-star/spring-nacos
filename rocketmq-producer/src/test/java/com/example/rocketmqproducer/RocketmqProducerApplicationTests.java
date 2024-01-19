@@ -1,10 +1,10 @@
-package com.example.rocketmqtest;
+package com.example.rocketmqproducer;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class RocketmqTestApplicationTests {
+class RocketmqProducerApplicationTests {
 
     @Test
     void contextLoads() {

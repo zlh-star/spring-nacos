@@ -4,6 +4,11 @@ import com.alibaba.fastjson.JSON;
 import com.example.rocketmqproducer.dto.Account;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.rocketmq.client.exception.MQBrokerException;
+import org.apache.rocketmq.client.exception.MQClientException;
+import org.apache.rocketmq.client.producer.DefaultMQProducer;
+import org.apache.rocketmq.common.message.Message;
+import org.apache.rocketmq.remoting.exception.RemotingException;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,6 +30,21 @@ public class TestController {
 
     @Autowired
     private ProducerDemo producerDemo;
+
+    @ApiOperation(value = "/shengchan",tags = "生产")
+    @RequestMapping(value = "/shengchan",method = RequestMethod.POST)
+    public void shengchan () throws MQClientException, MQBrokerException, RemotingException, InterruptedException {
+        DefaultMQProducer producer = new DefaultMQProducer("producer_grp_01");
+// 设置NameServer地址
+        producer.setNamesrvAddr("localhost:9876");
+// 启动生产者
+        producer.start();
+// 发送消息
+        Message message = new Message("tp_demo_01", "zhaolinhai".getBytes(StandardCharsets.UTF_8));
+        producer.send(message);
+// 关闭生产者
+        producer.shutdown();
+    }
 
     @ApiOperation(value = "test",tags = "发送消息")
     @RequestMapping(value = "/test",method = RequestMethod.POST)
