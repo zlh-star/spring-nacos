@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiOperation;
 import org.apache.rocketmq.client.exception.MQBrokerException;
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
+import org.apache.rocketmq.client.producer.TransactionMQProducer;
 import org.apache.rocketmq.common.message.Message;
 import org.apache.rocketmq.remoting.exception.RemotingException;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
@@ -30,6 +31,20 @@ public class TestController {
 
     @Autowired
     private ProducerDemo producerDemo;
+
+    @ApiOperation(value = "/shengchan1",tags = "生产1")
+    @RequestMapping(value = "/shengchan1",method = RequestMethod.POST)
+    public void shengchan1() throws MQClientException, MQBrokerException, RemotingException, InterruptedException {
+//        DefaultMQProducer producer = new DefaultMQProducer("producer_transaction");
+        TransactionMQProducer producer=new TransactionMQProducer("producer_transaction");
+        producer.setNamesrvAddr("localhost:9876");
+
+        producer.start();
+        Message message = new Message("transaction_topic", "zhaolinhai".getBytes(StandardCharsets.UTF_8));
+
+        producer.send(message);
+        producer.shutdown();
+    }
 
     @ApiOperation(value = "/shengchan",tags = "生产")
     @RequestMapping(value = "/shengchan",method = RequestMethod.POST)
