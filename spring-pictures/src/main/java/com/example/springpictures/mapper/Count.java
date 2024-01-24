@@ -12,6 +12,8 @@ import lombok.NoArgsConstructor;
 public class Count {
     private String cout;
 
+    private String fileName;
+
 //    public String getCout() {
 //        return cout;
 //    }

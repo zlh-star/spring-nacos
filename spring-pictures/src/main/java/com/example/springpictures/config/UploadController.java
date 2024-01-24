@@ -1,71 +1,94 @@
 package com.example.springpictures.config;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.example.springpictures.mapper.Count;
 import com.example.springpictures.service.IImgUploadService;
-import javafx.application.Application;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.net.Inet4Address;
 import java.net.InetAddress;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @RestController
 @Configuration
 @Slf4j
 public class UploadController {
 
-    @Value("${server.port}")
-    private String port;
-
-    @Value("${web.upload-path}")
-    private String path;
+    @Value("${file-save-path}")
+    private String fileSavePath;
 
     @Autowired
     private IImgUploadService iImgUploadService;
 
+    @Autowired
+    private IImgUploadService imgUploadService;
+
+    private final String formDate=new SimpleDateFormat("/yyyy.MM.dd/").format(new Date());
+
+
+
 //    @Value("${server.port}")
 //    private String port;
 
-    @PostMapping(value = "/upload", consumes = {"multipart/form-data"})
-    public Object upload(@RequestBody MultipartFile file, HttpServletRequest request) {
+    @ApiOperation(value= "/upload", tags = "上传多个文件")
+    @RequestMapping(value = "/upload", consumes = {"multipart/form-data"}
+            ,method = RequestMethod.POST)
+    public Object upload(@RequestBody List<MultipartFile> file, HttpServletRequest request) {
 
-//        List<MultipartFile> files = new ArrayList<>(Arrays.asList(file));
+        List<Count> imgPaths=new ArrayList<>();
+        Map<String,Object> result=new HashMap<>();
         log.info("上传多个文件");
-//        for (MultipartFile file1 : file) {
-            String contentType = file.getContentType();
-            String fileName = file.getOriginalFilename();
-            String filePath = request.getSession().getServletContext().getRealPath(path);
-            log.info("filename1:" + fileName);
-            log.info("filePath1:" + filePath);
+        for (MultipartFile multipartFile : file) {
+            String contentType = multipartFile.getContentType();
+            String fileName = multipartFile.getOriginalFilename();
 
-            try {
-                FileUtils.upload(file.getBytes(), filePath, fileName);
-            } catch (Exception e) {
-                e.printStackTrace();
+            if(reName(multipartFile)==null&&fileName!=null){
+                if(!fileName.endsWith(".jpg")&&!fileName.endsWith(".png")&&!fileName.endsWith(".jpeg")){
+                    result.put("status","error");
+                    result.put("message","文件类型错误");
+                    return result;
+                }
+                String[] a=fileName.split("\\.");
+                String realPath=fileSavePath+formDate;
+                String newName= UUID.randomUUID() +"."+a[1];
+                try {
+                    FileUtils.upload(multipartFile, realPath, newName);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                // 拼接图片url
+                String imgUrl = request.getScheme()+"://" + request.getServerName() + ":" + request.getServerPort()
+                        +"/images"+formDate+newName;
+                Count count=new Count();
+                count.setCout(imgUrl);
+                count.setFileName(fileName);
+                imgPaths.add(count);
             }
-
-            // 拼接图片url
-            String imgHost = "http://" + getIp() + ":" + port;
-            String imgUploadPath = path;
-            String imgPath = imgHost + imgUploadPath + fileName;
-
-            log.info("拼接好的图片上传路径为：" + imgPath);
-
-            return Result.wrapResult("upload img success，请到上传路径查看！" + iImgUploadService.imgUpload(imgPath));
         }
+        return Result.wrapResult("upload img success，请到上传路径查看！"+ iImgUploadService.imgUpload(imgPaths));
+    }
+
+    private String reName(MultipartFile multipartFile){
+
+        String fileName = multipartFile.getOriginalFilename();
+        LambdaQueryWrapper<Count> queryWrapper=new LambdaQueryWrapper<>();
+        queryWrapper.eq(Count::getFileName,fileName);
+
+        Count count =imgUploadService.getOne(queryWrapper);
+//        if(count==null){
+//            return null;
+//        }
+//        String oldName= count.getFileName()==null?null:fileName;
+//        System.out.println(oldName);
+        return count==null ? null : count.getFileName();
+    }
 
 
     //获取当前IP地址
