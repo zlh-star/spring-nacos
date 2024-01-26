@@ -3,10 +3,10 @@ server:
 spring:
   application:
     name: provider
-  security:
-    user:
-      name: admin
-      password: admin
+#  security:
+#    user:
+#      name: admin
+#      password: admin
   cloud:
     nacos:
       discovery:
