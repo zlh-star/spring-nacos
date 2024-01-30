@@ -1,15 +1,17 @@
-package com.example.provider2;
+package com.example.provider;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
-@EnableDiscoveryClient
 @SpringBootApplication
-public class Provider2Application {
+@EnableDiscoveryClient
+@MapperScan("com.example.demo.service")
+public class DemoApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(Provider2Application.class, args);
+        SpringApplication.run(DemoApplication.class, args);
     }
 
 }

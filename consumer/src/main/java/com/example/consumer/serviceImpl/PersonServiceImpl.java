@@ -21,6 +21,42 @@ public class PersonServiceImpl implements FallbackFactory<Person> {
                 cause.printStackTrace();
                 return "spring cloud"+name+"i am fallback message!";
             }
+
+            @Override
+            public Object getScanner() {
+                cause.printStackTrace();
+                return "获取失败";
+            }
+
+            @Override
+            public String testRow() {
+                cause.printStackTrace();
+                return "测试插入失败";
+            }
+
+            @Override
+            public String testRows() {
+                cause.printStackTrace();
+                return "测试rows失败";
+            }
+
+            @Override
+            public String test() {
+                cause.printStackTrace();
+                return "测试hase模糊查询及精确查询失败";
+            }
+
+            @Override
+            public String deleteColumnFamily() {
+                cause.printStackTrace();
+                return "删除列簇失败";
+            }
+
+            @Override
+            public String deleteTable() {
+                cause.printStackTrace();
+                return "删除table失败";
+            }
         };
     }
 }
